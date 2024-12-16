@@ -12,35 +12,35 @@ Communication Interservices avec JMS
 Les échanges internes entre les différents modules du système s’effectuent via JMS (Java Message Service).
 
 ## Acteurs 
-Utilisateur
- Tamagotchi
-La fée magique
+* Utilisateur
+* Tamagotchi
+* La fée magique
 
 ## Système
-Service d’adoption (adoption et mise à jour de statut des Tamagotchis)
-Service de soin (gestion des maladies et des soins)
-Service culturel (gestion des activites, des prix et des rangs des Tamagotchis)
-Service Bancaire (gestions des comptes et des prêts des utilisateurs
+* Service d’adoption (adoption et mise à jour de statut des Tamagotchis)
+* Service de soin (gestion des maladies et des soins)
+* Service culturel (gestion des activites, des prix et des rangs des Tamagotchis)
+* Service Bancaire (gestions des comptes et des prêts des utilisateurs
 
 Fonctionnalités
 UTILISATEUR
-Un utilisateur peut adopter et personnaliser son Tamagotchi
-Un utilisateur peut nourrir, soigner et jouer avec son Tamagotchi
-Un utilisateur peut recevoir des notifications sur l’état de son Tamagotchi.
-Un utilisateur peut acheter des biens pour son Tamagotchi.
+* Un utilisateur peut adopter et personnaliser son Tamagotchi
+* Un utilisateur peut nourrir, soigner et jouer avec son Tamagotchi
+* Un utilisateur peut recevoir des notifications sur l’état de son Tamagotchi.
+* Un utilisateur peut acheter des biens pour son Tamagotchi.
 
 TAMAGOTCHI
-Un Tamagochi possède les attributs : santé, faim, bonheur et énergie.
-Un Tamagotchi peut rencontrer et parler avec d’autres Tamagotchis
-Un Tamagotchi peut tomber malade pour négligence
-Un Tamagotchi peut participer à des activités et remporter des prix
-Un Tamagotchi peut échanger des cadeaux avec d’autres Tamagotchis
+* Un Tamagochi possède les attributs : santé, faim, bonheur et énergie.
+* Un Tamagotchi peut rencontrer et parler avec d’autres Tamagotchis
+* Un Tamagotchi peut tomber malade pour négligence
+* Un Tamagotchi peut participer à des activités et remporter des prix
+* Un Tamagotchi peut échanger des cadeaux avec d’autres Tamagotchis
 
 LA FÉE MAGIQUE  Lizzy
-La fée magique peut accorder un cadeau à un Tamagotchi dès qu’ils se rencontrent.
-La fée magique peut donner un prix à un Tamagochi qui remporte une activité.
-La fée magique peut retirer la garde d’un Tamagotchi a un utilisateur pour négligence (niveau de bonheur, faim, santé ou énergie en dessous du seuil minimal).
-La fée magique peut consulter la liste des Tamagotchis.
+* La fée magique peut accorder un cadeau à un Tamagotchi dès qu’ils se rencontrent.
+* La fée magique peut donner un prix à un Tamagochi qui remporte une activité.
+* La fée magique peut retirer la garde d’un Tamagotchi a un utilisateur pour négligence (niveau de bonheur, faim, santé ou énergie en dessous du seuil minimal).
+* La fée magique peut consulter la liste des Tamagotchis.
 
 ## Exigences Fonctionnelles 
 Le système doit permettre la création, la suppression et la gestion d’un tamagotchi.
