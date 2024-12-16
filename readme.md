@@ -22,7 +22,7 @@ Les échanges internes entre les différents modules du système s’effectuent 
 * Service culturel (gestion des activites, des prix et des rangs des Tamagotchis)
 * Service Bancaire (gestions des comptes et des prêts des utilisateurs
 
-Fonctionnalités
+## Fonctionnalités
 
 UTILISATEUR
 * Un utilisateur peut adopter et personnaliser son Tamagotchi
