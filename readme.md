@@ -23,6 +23,7 @@ Les échanges internes entre les différents modules du système s’effectuent 
 * Service Bancaire (gestions des comptes et des prêts des utilisateurs
 
 Fonctionnalités
+
 UTILISATEUR
 * Un utilisateur peut adopter et personnaliser son Tamagotchi
 * Un utilisateur peut nourrir, soigner et jouer avec son Tamagotchi
