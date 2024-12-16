@@ -20,7 +20,7 @@ Les échanges internes entre les différents modules du système s’effectuent 
 * Service d’adoption (adoption et mise à jour de statut des Tamagotchis)
 * Service de soin (gestion des maladies et des soins)
 * Service culturel (gestion des activites, des prix et des rangs des Tamagotchis)
-* Service Bancaire (gestions des comptes et des prêts des utilisateurs
+* Service bancaire (gestions des comptes et des prêts des utilisateurs)
 
 ## Fonctionnalités
 
