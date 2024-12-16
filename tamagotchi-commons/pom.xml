@@ -18,7 +18,7 @@
     </properties>
 
 
-    <artifactId>ticket-commons</artifactId>
+    <artifactId>tamagotchi-commons</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
