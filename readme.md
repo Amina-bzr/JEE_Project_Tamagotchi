@@ -43,6 +43,8 @@ LA FÉE MAGIQUE  Lizzy
 * La fée magique peut retirer la garde d’un Tamagotchi a un utilisateur pour négligence (niveau de bonheur, faim, santé ou énergie en dessous du seuil minimal).
 * La fée magique peut consulter la liste des Tamagotchis.
 
+## Schéma relationnel
+
 ## Exigences Fonctionnelles 
 Le système doit permettre la création, la suppression et la gestion d’un tamagotchi.
 Le service de santé doit ajuster les attributs en fonction des actions de l’utilisateur et du temps écoulé 
