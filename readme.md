@@ -41,11 +41,11 @@ LA FÉE MAGIQUE  Lizzy
 ## Schéma relationnel
 
 ## Exigences Fonctionnelles 
-Le service adoption doit permettre la création, la suppression et la gestion d’un tamagotchi.
-Le service de soin doit gérer les maladies et soins ,et ajuster les attributs en fonction des actions de l’utilisateur et du temps écoulé
-Le service social doit gérer les interactions entre Tamagotchis
-Le service culturel doit permettre la gestion des activités, des prix et des rangs des Tamagotchis
-Le service bancaire doit permettre la gestion des comptes et des prêts des utilisateurs
-L’état du Tamagotchi doit être sauvegardé
+* **Le service adoption** doit permettre la création, la suppression et la gestion d’un tamagotchi.
+* **Le service de soin** doit gérer les maladies et soins ,et ajuster les attributs en fonction des actions de l’utilisateur et du temps écoulé
+* **Le service social** doit gérer les interactions entre Tamagotchis
+* **Le service culturel** doit permettre la gestion des activités, des prix et des rangs des Tamagotchis
+* **Le service bancaire** doit permettre la gestion des comptes et des prêts des utilisateurs
+* L’état du Tamagotchi doit être sauvegardé
 
 
