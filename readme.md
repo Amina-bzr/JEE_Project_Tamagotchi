@@ -1,7 +1,7 @@
 ## Introduction
 Bienvenue dans notre projet de Tamagotchi Collectif, une réinvention moderne et virtuelle du concept classique des Tamagotchis, avec une dimension collaborative et communautaire.
 
-## Objectif du Projet
+## Objectif du Projet 
 Ce projet propose un système innovant permettant d’adopter et de gérer des Tamagotchis virtuels. Ces petits compagnons numériques peuvent interagir entre eux, participer à diverses activités (individuelles ou collectives) et recevoir des soins adaptés pour assurer leur bien-être. 
 
 
