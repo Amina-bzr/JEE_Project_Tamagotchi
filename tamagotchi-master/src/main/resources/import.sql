@@ -6,5 +6,5 @@
 --(3, 'Tama3', NULL, 0, 100, 100, 100, 'good'); --no owner
 
 
---REPLACE INTO `Owner` (`idOwner`, `fname`, `lname`, `username`)
-        --VALUES (1, 'Amina', 'Bouzar', 'fenn'), (2, 'Odette', 'Odd', 'odd');
+REPLACE INTO `Owner` (`idOwner`, `fname`, `lname`, `username`)
+        VALUES (1, 'Amina', 'Bouzar', 'fenn'), (2, 'Odette', 'Odd', 'odd');
