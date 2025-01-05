@@ -14,7 +14,6 @@
     <module>tamagotchi-soins</module>
     <module>tamagotchi-adoption</module>
     <module>tamagotchi-bancaire</module>
-    <module>tamagotchi-culture</module>
     <module>tamagotchi-social</module>
     <module>fee-magique</module>
   </modules>
