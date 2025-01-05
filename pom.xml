@@ -8,11 +8,15 @@
   <packaging>pom</packaging>
   <name>project-m1</name>
   <modules>
+    <module>tamagotchi-commons</module>
+    <module>tamagotchi-user</module>
+    <module>tamagotchi-master</module>
     <module>tamagotchi-soins</module>
     <module>tamagotchi-adoption</module>
-    <module>tamagotchi-commons</module>
     <module>tamagotchi-bancaire</module>
     <module>tamagotchi-culture</module>
+    <module>tamagotchi-social</module>
+    <module>fee-magique</module>
   </modules>
   <dependencyManagement>
     <dependencies>
@@ -28,7 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jdbc-h2</artifactId>
+      <artifactId>quarkus-jdbc-mariadb</artifactId>
     </dependency>
   </dependencies>
   <build>
