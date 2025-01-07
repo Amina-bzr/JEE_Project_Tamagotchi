@@ -12,7 +12,6 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.mockito.Mockito.when;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,24 +48,4 @@ public class AdoptionTest {
     }
 }
 
-
-
-
-@QuarkusTest
-public class InjectMockTest {
-
-    @InjectMock
-    @RestClient
-    Client mock;
-
-    @BeforeEach
-    public void setUp() {
-        when(mock.get()).thenReturn("MockAnswer");
-    }
-
-    @Test
-    void doTest() {
-        // ...
-    }
-}
 
