@@ -106,8 +106,14 @@ public class Tamagotchi {
         this.state = state;
     }
 
-    // Default constructor
+    //default constructor
     public Tamagotchi() {
+    }
+
+
+    public Tamagotchi(Owner owner, String name) {
+        this.name = name;
+        this.owner = owner;
         this.state = "good"; //default state is set t good
         this.energy=100;
         this.happiness=100;

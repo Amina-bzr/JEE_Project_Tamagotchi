@@ -1,10 +1,11 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import fr.pantheonsorbonne.ufr27.miage.exception.OwnerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.Owner;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-
 
 public interface OwnerDAO {
 
