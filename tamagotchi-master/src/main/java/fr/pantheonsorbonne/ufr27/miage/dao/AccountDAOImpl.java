@@ -7,6 +7,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -39,22 +40,39 @@ public class AccountDAOImpl implements AccountDAO {
         em.merge(account);
     }
 
+
     @Override
     @Transactional
-    public void deleteAccount(String accountNumber) {
-        // Chercher l'account avec le numéro fourni
-        Optional<Account> accountOpt = findAccountByNumber(accountNumber);
-
-        // Si l'account est présent, on le supprime
-        if (accountOpt.isPresent()) {
-            Account account = accountOpt.get();
-            em.remove(account); // Supprimer le compte
-        } else {
-            throw new NoResultException("Account with number " + accountNumber + " not found.");
-        }
+    public void deleteAccount(Account account) {
+        em.createQuery("DELETE FROM Account a WHERE a.accountNumber = :accountNumber AND a.balance = :balance AND a.tamagotchiId = :tamagotchiId AND a.creationDate = :creationDate")
+                .setParameter("accountNumber", account.getAccountNumber())
+                .setParameter("balance", account.getBalance())
+                .setParameter("tamagotchiId", account.getTamagotchiId())
+                .setParameter("creationDate", account.getCreationDate())
+                .executeUpdate();
     }
 
+    @Override
+    @Transactional
+    public Collection<Account> getAllAccounts() {
+        return em.createQuery("SELECT a FROM Account a", Account.class).getResultList();
+    }
 
+    @Override
+    @Transactional
+    public Account getAccountById(Long accountId) {
+        return em.createQuery("SELECT a FROM Account a WHERE a.id = :accountId", Account.class)
+                .setParameter("accountId", accountId)
+                .getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public Account getAccountByNumber(String accountNumber) {
+        return em.createQuery("SELECT a FROM Account a WHERE a.accountNumber = :accountNumber", Account.class)
+                .setParameter("accountNumber", accountNumber)
+                .getSingleResult();
+    }
 
 }
 
