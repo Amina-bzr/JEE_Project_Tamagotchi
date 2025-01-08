@@ -1,7 +1,6 @@
 package top.nextnet.camel.gateways;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.Tamagotchi;
-import top.nextnet.service.AdoptionService;
+import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,7 +18,7 @@ public class AdoptionGateway {
     @Inject
     CamelContext camelContext;
 
-    public void createTamagothi(Tamagotchi  tamagotchi) {
+    public void createTamagothi(TamagotchiDTO tamagotchi) {
         try (ProducerTemplate producer = camelContext.createProducerTemplate()) {
             producer.sendBody("direct:TCreation", tamagotchi);
         } catch (IOException e) {

@@ -1,15 +1,9 @@
 package top.nextnet.service;
 import top.nextnet.camel.gateways.AdoptionGateway;
-import fr.pantheonsorbonne.ufr27.miage.dto.Tamagotchi;
+import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-
-import java.util.Arrays;
-import java.util.Collection;
-
 
 
 @ApplicationScoped
@@ -19,7 +13,7 @@ public class AdoptionService {
 
     @Transactional
     public void createTamagotchi(Integer idOwner, String name ) {
-        Tamagotchi newTamagotchi = new Tamagotchi(name, idOwner);
+        TamagotchiDTO newTamagotchi = new TamagotchiDTO(name, idOwner);
         this.adoptionGateway.createTamagothi(newTamagotchi);
 
     }

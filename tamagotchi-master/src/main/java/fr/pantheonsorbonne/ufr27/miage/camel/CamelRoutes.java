@@ -1,8 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 
-import fr.pantheonsorbonne.ufr27.miage.camel.AdoptionGateway;
-import fr.pantheonsorbonne.ufr27.miage.dto.Tamagotchi;
+import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -46,7 +45,7 @@ public class CamelRoutes extends RouteBuilder {
 
 
         from("sjms2:" + jmsPrefix + "removeTamagotchiFromOwner")
-                .unmarshal().json(Tamagotchi.class)
+                .unmarshal().json(TamagotchiDTO.class)
                 .bean(adoptionGateway, "removeTamagotchiFromOwner");
 
     }

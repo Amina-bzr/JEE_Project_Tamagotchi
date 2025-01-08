@@ -1,19 +1,28 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class Tamagotchi {
+public class TamagotchiDTO {
     Integer id;
     String name;
     Integer owner;
+    String state;
 
 
-    public Tamagotchi(Integer id){
+    public TamagotchiDTO(Integer id, String state){
+        this.id = id;
+        this.state = state;
+        this.name = "";
+        this.owner = null;
+    }
+
+    public TamagotchiDTO(Integer id){
         this.id = id;
         this.name = "";
         this.owner = null;
     }
 
-    public Tamagotchi(String name, Integer owner){
+    public TamagotchiDTO(String name, Integer owner){
         this.id=null;
+        this.state = null;
         this.name = name;
         this.owner = owner;
     }
@@ -29,4 +38,9 @@ public class Tamagotchi {
     public Integer getOwner() {
         return owner;
     }
+
+    public String getState() {
+        return state;
+    }
+
 }

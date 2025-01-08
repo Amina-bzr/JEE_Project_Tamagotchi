@@ -1,9 +1,5 @@
 package top.nextnet.camel;
-import fr.pantheonsorbonne.ufr27.miage.dto.Tamagotchi;
 import org.apache.camel.CamelContext;
-import org.apache.camel.CamelExecutionException;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
