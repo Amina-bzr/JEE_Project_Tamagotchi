@@ -63,6 +63,22 @@ public class AdoptionTest {
         assertEquals(200, statusCode);
     }
 
+    @Test
+    public void testGetTamagotchis() {
+        //PUT request + response extraction
+        ValidatableResponse response = given()
+                .when()
+                .get("http://localhost:8082/adoption/tamagotchis?hasOwner=true")
+                .then();
+
+        //extract status
+        int statusCode = response.extract().response().getStatusCode();
+
+        System.out.println("Response Status Code: " + statusCode);
+        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+        assertEquals(200, statusCode);
+    }
+
 }
 
 

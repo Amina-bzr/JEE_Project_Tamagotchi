@@ -5,6 +5,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import fr.pantheonsorbonne.ufr27.miage.service.AdoptionService;
 
+import java.util.Collection;
+
 @Path("/adoption")
 public class AdoptionResource {
 
@@ -43,6 +45,14 @@ public class AdoptionResource {
         return Response.status(Response.Status.OK)
                 .entity(responseMessage) // Returning plain text message
                 .build();
+    }
+
+
+    @Path("/tamagotchis")
+    @GET
+    public Response getTamagotchis(@QueryParam("hasOwner") Boolean hasOwner) {
+        Collection<Tamagotchi> tamagotchis = this.adoptionService.getTamagotchis(hasOwner);
+        return Response.ok(tamagotchis).build();
     }
 
 

@@ -12,6 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 
-@RequestScoped
+@ApplicationScoped
 public class AdoptionService {
 
     @PersistenceContext
@@ -32,10 +33,7 @@ public class AdoptionService {
     OwnerDAO ownerDAO;
 
 
-    public Collection<Tamagotchi> getTamagotchisService() {
-        return this.tamagotchiDAO.getTamagotchis();
 
-    }
 
     public Tamagotchi getTamagotchiService(Integer tamagotchiId) throws TamagotchiNotFoundException {
         Tamagotchi tamagotchi = this.tamagotchiDAO.getTamagotchiById(tamagotchiId);
@@ -68,5 +66,20 @@ public class AdoptionService {
         return tamagotchi;
 
     }
+
+    @Transactional
+    public Collection<Tamagotchi> getTamagotchis(Boolean hasOwner) {
+        String query;
+
+        if (hasOwner != null) {
+            query = hasOwner ? "SELECT t FROM Tamagotchi t WHERE t.owner IS NOT NULL" : "SELECT t FROM Tamagotchi t WHERE t.owner IS NULL";
+        } else {
+            // If hasOwner is not set, return all Tamagotchis
+            query = "SELECT t FROM Tamagotchi t";
+        }
+
+        return em.createQuery(query, Tamagotchi.class).getResultList();
+    }
+
 
 }

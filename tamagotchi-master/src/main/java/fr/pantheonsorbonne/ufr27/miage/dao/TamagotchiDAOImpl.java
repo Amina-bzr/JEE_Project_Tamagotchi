@@ -13,7 +13,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-@RequestScoped
+@ApplicationScoped
 public class TamagotchiDAOImpl implements TamagotchiDAO {
 
     @PersistenceContext
