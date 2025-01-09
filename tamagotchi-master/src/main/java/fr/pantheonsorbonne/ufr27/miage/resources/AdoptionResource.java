@@ -1,4 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
+import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -14,9 +15,20 @@ public class AdoptionResource {
     @Path("/{idOwner}/create/{name}")
     @POST
     public Response createTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("name") String name) {
-        this.adoptionService.addTamagotchiService(name, idOwner);
-        return Response.status(Response.Status.CREATED).build(); //201 : CREATED SUCCES
+        System.out.println("name is " + name);
+
+        // Call the service to create the new Tamagotchi and get the created object
+        Tamagotchi newTamagotchi = this.adoptionService.addTamagotchiService(name, idOwner);
+
+        // Construct a response message
+        String responseMessage = "Tamagotchi created successfully! " + newTamagotchi.toString();
+
+        // Return the message and the Tamagotchi object in the response
+        return Response.status(Response.Status.CREATED)
+                .entity(responseMessage) // Returning plain text message
+                .build();
     }
+
 
 }
 

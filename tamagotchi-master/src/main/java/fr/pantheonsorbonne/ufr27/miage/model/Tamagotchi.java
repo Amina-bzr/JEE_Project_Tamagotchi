@@ -54,6 +54,19 @@ public class Tamagotchi {
 
     }
 
+    // Constructeur par défaut
+    public Tamagotchi(Owner owner, String name) {
+        this.owner = owner;
+        this.name = name;
+        this.state = "good";
+        this.energy = 50;      // Début en état équilibré
+        this.happiness = 50;
+        this.health = 50;
+        this.hungry = 50;
+        this.thirst = 50;
+        this.lastUpdateTime = LocalDateTime.now(); // Initialisation au moment de la création
+    }
+
 
     // Getters et Setters
     public Integer getIdTamagotchi() {
@@ -161,16 +174,7 @@ public class Tamagotchi {
     }
 
 
-    // Constructeur par défaut
-    public Tamagotchi(Owner owner, String name) {
-        this.state = "good";
-        this.energy = 50;      // Début en état équilibré
-        this.happiness = 50;
-        this.health = 50;
-        this.hungry = 50;
-        this.thirst = 50;
-        this.lastUpdateTime = LocalDateTime.now(); // Initialisation au moment de la création
-    }
+
 
     // Méthode toString
     @Override

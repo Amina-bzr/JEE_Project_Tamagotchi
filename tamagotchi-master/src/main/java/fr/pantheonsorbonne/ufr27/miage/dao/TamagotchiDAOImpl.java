@@ -3,18 +3,20 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class TamagotchiDAOImpl implements TamagotchiDAO {
 
-    @Inject
+    @PersistenceContext
     EntityManager em;
 
     // Get all Tamagotchis
@@ -88,6 +90,9 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
     @Override
     @Transactional
     public Tamagotchi addTamagotchi(Tamagotchi tamagotchi) {
+        System.out.println("\nINSIDE DAO");
+        System.out.println("\nname is " + tamagotchi.getName());
+        System.out.println("\nowner is " + tamagotchi.getOwner());
         em.persist(tamagotchi);
         return tamagotchi; // Return the persisted Tamagotchi
     }

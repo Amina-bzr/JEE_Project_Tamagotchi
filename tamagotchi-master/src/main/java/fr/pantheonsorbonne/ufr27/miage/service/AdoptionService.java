@@ -6,7 +6,9 @@ import fr.pantheonsorbonne.ufr27.miage.exception.OwnerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.Owner;
 import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
+import fr.pantheonsorbonne.ufr27.miage.resources.AdoptionResource;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -16,25 +18,24 @@ import java.util.Arrays;
 import java.util.Collection;
 
 
-@ApplicationScoped
+@RequestScoped
 public class AdoptionService {
+
+    @PersistenceContext
+    EntityManager em;
+
     @Inject
     TamagotchiDAO tamagotchiDAO;
 
     @Inject
     OwnerDAO ownerDAO;
 
-    @Inject
-    AdoptionGateway adoptionGateway;
 
-
-    @Transactional
     public Collection<Tamagotchi> getTamagotchisService() {
         return this.tamagotchiDAO.getTamagotchis();
 
     }
 
-    @Transactional
     public Tamagotchi getTamagotchiService(Integer tamagotchiId) throws TamagotchiNotFoundException {
         Tamagotchi tamagotchi = this.tamagotchiDAO.getTamagotchiById(tamagotchiId);
         if (tamagotchi == null) {
@@ -43,18 +44,20 @@ public class AdoptionService {
         return tamagotchi;
     }
 
-    @Transactional
-    public void addTamagotchiService(String name, Integer idOwner) throws OwnerNotFoundException {
+    public Tamagotchi addTamagotchiService(String name, Integer idOwner) throws OwnerNotFoundException {
+
         Owner owner = this.ownerDAO.getOwner(idOwner);
         if (owner == null) {
             throw new OwnerNotFoundException("Owner with ID " + idOwner + " not found.");
         }
+
         Tamagotchi newTamagotchi = new Tamagotchi(owner, name);
+        System.out.println("\nIN adoptionSERVICE\nowner is " + newTamagotchi.owner);
+        System.out.println("\name is " + newTamagotchi.name);
         //add compte bancaire
         this.tamagotchiDAO.addTamagotchi(newTamagotchi);
-
+        return newTamagotchi;
     }
-    @Transactional
     public void updateTamagotchiOwner(Integer tamagotchiId, Integer ownerId) throws TamagotchiNotFoundException {
         Tamagotchi tamagotchi = this.tamagotchiDAO.getTamagotchiById(tamagotchiId);
         tamagotchi.setOwner(ownerDAO.getOwner(ownerId));
