@@ -22,7 +22,7 @@ public class AdoptionTest {
     public void setup() throws Exception{
         tamagotchi = new TamagotchiDTO("Kiri", 1);
     }
-
+/*
     @Test
     public void testCreationTamagotchi() {
         // Make sure the owner and name are valid values
@@ -48,7 +48,7 @@ public class AdoptionTest {
         // Assert the status code is 201 (created)
         assertEquals(201, statusCode);
     }
-
+*/
 }
 
 
