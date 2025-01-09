@@ -29,6 +29,24 @@ public class AdoptionResource {
                 .build();
     }
 
+    @Path("/{idOwner}/adopt/{idTamagotchi}")
+    @PUT
+    public Response createTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("idTamagotchi") Integer idTamagotchi) {
+        System.out.println("owner is " + idOwner + " Tamagotchi " + idTamagotchi);
+
+        //update the owner of the tamagotchi
+        Tamagotchi updatedTamagotchi = this.adoptionService.updateTamagotchiOwner(idTamagotchi, idOwner);
+
+        //construct a response message
+        String responseMessage = "Tamagotchi created successfully! " + updatedTamagotchi.toString();
+
+        return Response.status(Response.Status.OK)
+                .entity(responseMessage) // Returning plain text message
+                .build();
+    }
+
+
+
 
 }
 

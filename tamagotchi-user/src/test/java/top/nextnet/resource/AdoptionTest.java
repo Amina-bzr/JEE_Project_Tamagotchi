@@ -20,33 +20,47 @@ public class AdoptionTest {
     @BeforeEach
     @Transactional
     public void setup() throws Exception{
-        tamagotchi = new TamagotchiDTO("Kiri", 1);
+        tamagotchi = new TamagotchiDTO("Kiri", 1, 1);
     }
 
     @Test
     public void testCreationTamagotchi() {
-        // Make sure the owner and name are valid values
         Integer owner = tamagotchi.getOwner();
         String name = tamagotchi.getName();
 
-        // Debugging step: Print out the generated URL
         System.out.println("Testing with URL: /adoption/" + owner + "/create/" + name);
 
-        // Send POST request and extract the response
         ValidatableResponse response = given()
                 .when()
                 .post("http://localhost:8082/adoption/" + owner + "/create/" + name)
                 .then();
 
-        // Extract the status code from the response
         int statusCode = response.extract().response().getStatusCode();
 
-        // Print the response status and body for debugging
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + response.extract().response().getBody().asString());
 
-        // Assert the status code is 201 (created)
         assertEquals(201, statusCode);
+    }
+
+
+    @Test
+    public void testAdoptTamagotchi() {
+        Integer owner = tamagotchi.getOwner();
+        Integer id = tamagotchi.getId();
+        System.out.println("Testing with URL: /adoption/" + owner + "/adopt/" + id);
+        //PUT request + response extraction
+        ValidatableResponse response = given()
+                .when()
+                .put("http://localhost:8082/adoption/" + owner + "/adopt/" + id)
+                .then();
+
+        //extract status
+        int statusCode = response.extract().response().getStatusCode();
+
+        System.out.println("Response Status Code: " + statusCode);
+        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+        assertEquals(200, statusCode);
     }
 
 }

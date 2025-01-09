@@ -17,11 +17,19 @@ public class TamagotchiDTO {
     public TamagotchiDTO(Integer id){
         this.id = id;
         this.name = "";
+        this.state = null;
         this.owner = null;
     }
 
     public TamagotchiDTO(String name, Integer owner){
         this.id=null;
+        this.state = null;
+        this.name = name;
+        this.owner = owner;
+    }
+
+    public TamagotchiDTO(String name, Integer owner, Integer id){
+        this.id=id;
         this.state = null;
         this.name = name;
         this.owner = owner;

@@ -3,6 +3,7 @@ import fr.pantheonsorbonne.ufr27.miage.camel.AdoptionGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.TamagotchiDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OwnerDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.OwnerNotFoundException;
+import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiHasOwner;
 import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.Owner;
 import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
@@ -58,10 +59,13 @@ public class AdoptionService {
         this.tamagotchiDAO.addTamagotchi(newTamagotchi);
         return newTamagotchi;
     }
-    public void updateTamagotchiOwner(Integer tamagotchiId, Integer ownerId) throws TamagotchiNotFoundException {
+    public Tamagotchi updateTamagotchiOwner(Integer tamagotchiId, Integer ownerId) throws TamagotchiNotFoundException, TamagotchiHasOwner {
         Tamagotchi tamagotchi = this.tamagotchiDAO.getTamagotchiById(tamagotchiId);
+        if (tamagotchi == null) throw new TamagotchiNotFoundException("Tamagotchi with ID "+tamagotchiId+" not found.");
+        if (tamagotchi.owner != null) throw new TamagotchiHasOwner("Tamagotchi " + tamagotchiId + " can't be adopted, it already has an owner : " + tamagotchi.owner.getUsername());
         tamagotchi.setOwner(ownerDAO.getOwner(ownerId));
         this.tamagotchiDAO.updateTamagotchi(tamagotchi);
+        return tamagotchi;
 
     }
 

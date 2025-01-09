@@ -52,8 +52,8 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
             return em.createQuery("SELECT t FROM Tamagotchi t WHERE t.idTamagotchi = :idTamagotchi", Tamagotchi.class)
                     .setParameter("idTamagotchi", idTamagotchi)
                     .getSingleResult();
-        } catch (NonUniqueResultException | NoResultException e) {
-            return null; // No result found or multiple results found
+        } catch (NoResultException e) {
+            return null;
         }
     }
 
@@ -83,7 +83,7 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
             existingTamagotchi.setState(tamagotchi.getState());
             return em.merge(existingTamagotchi); // Merge the updated tamagotchi back into the persistence context
         }
-        return null; // Tamagotchi not found
+        return null; //Tamagotchi not found
     }
 
     // Add a new Tamagotchi
@@ -94,6 +94,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
         System.out.println("\nname is " + tamagotchi.getName());
         System.out.println("\nowner is " + tamagotchi.getOwner());
         em.persist(tamagotchi);
-        return tamagotchi; // Return the persisted Tamagotchi
+        return tamagotchi;
     }
 }
