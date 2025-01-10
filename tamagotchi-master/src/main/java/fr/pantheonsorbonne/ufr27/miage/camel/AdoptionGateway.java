@@ -7,6 +7,9 @@ import fr.pantheonsorbonne.ufr27.miage.service.AdoptionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+
+import java.io.IOException;
 
 @ApplicationScoped
 public class AdoptionGateway {
@@ -16,12 +19,23 @@ public class AdoptionGateway {
     @Inject
     CamelContext camelContext;
 
-    public TamagotchiDTO addTamagotchi(TamagotchiDTO tamagotchi) {
-        this.AdoptionService.addTamagotchiService(tamagotchi.getName(), tamagotchi.getOwner());
-        return tamagotchi;
+    //fee magique tells adoption to remove tamagotchi from owner cause of death
+    public void removeTamagotchiFromOwner(TamagotchiDTO tamagotchi) {
+        this.AdoptionService.updateTamagotchiOwner(tamagotchi.getId(), null);
     }
 
-    public void removeTamagotchiFromOwner(TamagotchiDTO tamagotchi) {
-        this.AdoptionService.updateTamagotchiOwner(tamagotchi.getId(), tamagotchi.getOwner());
+    //adoption sends alert to fee magique to tell her that the user adopted a new tamagotchi
+    public void sendAdoptedTamagotchi(TamagotchiDTO tamagotchi) {
+        try (ProducerTemplate template = camelContext.createProducerTemplate()) {
+            template.sendBody("direct:TamagotchiAdopted", tamagotchi);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+
+    //Tamagotchi receives a gift => service bancaire (money)
+
+    //increase bonheur: réception cadeau, manger, achat de boutique, ...
+
 }
