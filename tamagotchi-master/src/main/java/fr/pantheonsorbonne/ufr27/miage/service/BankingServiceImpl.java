@@ -27,7 +27,7 @@ public class BankingServiceImpl implements BankingService {
         Account account = new Account();
         account.setTamagotchiId(tamagotchiId);
         account.setBalance(100.0); // Default balance
-        account.setAccountNumber(java.util.UUID.randomUUID().toString()); // Generate a unique account number
+        account.setAccountNumber(java.util.UUID.randomUUID().toString()); //generate a unique account number
         accountDAO.createAccount(account);
         return account;
     }
@@ -46,7 +46,7 @@ public class BankingServiceImpl implements BankingService {
         account.setBalance(account.getBalance() + amount);
         accountDAO.updateAccount(account);
 
-        // Log the transaction
+        //log the transaction
         Transaction transaction = new Transaction();
         transaction.setAccount(account);
         transaction.setAmount(amount);
@@ -68,7 +68,7 @@ public class BankingServiceImpl implements BankingService {
         account.setBalance(account.getBalance() - amount);
         accountDAO.updateAccount(account);
 
-        // Log the transaction
+        //log the transaction
         Transaction transaction = new Transaction();
         transaction.setAccount(account);
         transaction.setAmount(-amount);
@@ -95,7 +95,7 @@ public class BankingServiceImpl implements BankingService {
         accountDAO.updateAccount(fromAccount);
         accountDAO.updateAccount(toAccount);
 
-        // Log the transaction for sender
+        //log the transaction for sender
         Transaction transactionOut = new Transaction();
         transactionOut.setAccount(fromAccount);
         transactionOut.setAmount(-amount);
@@ -103,7 +103,7 @@ public class BankingServiceImpl implements BankingService {
         transactionOut.setTimestamp(LocalDateTime.now());
         transactionDAO.createTransaction(transactionOut);
 
-        // Log the transaction for receiver
+        //log the transaction for receiver
         Transaction transactionIn = new Transaction();
         transactionIn.setAccount(toAccount);
         transactionIn.setAmount(amount);
