@@ -1,48 +1,18 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.Owner;
-import fr.pantheonsorbonne.ufr27.miage.dto.Tamagotchi;
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "MagicalAlert")
-@NamedQueries({
-        @NamedQuery(
-                name = "MagicalAlert.findAll",
-                query = "SELECT m FROM MagicalAlert m"
-        ),
-        @NamedQuery(
-                name = "MagicalAlert.findByType",
-                query = "SELECT m FROM MagicalAlert m WHERE m.alertType = :alertType"
-        ),
-        @NamedQuery(
-                name = "MagicalAlert.findByTamagotchi",
-                query = "SELECT m FROM MagicalAlert m WHERE m.tamagotchi.id = :tamagotchiId"
-        )
-})
 public class MagicalAlert {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
+    private String message;
+    private LocalDateTime date;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "idTamagotchi", nullable = false)
-    private Tamagotchi tamagotchi;
+    public MagicalAlert() {}
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "idOwner", nullable = false)
-    private Owner owner;
-
-    @Column(name = "alertType", nullable = false)
-    private String alertType;
-
-    @Column(name = "alertTime", nullable = false)
-    private LocalDateTime alertTime;
-
-    // Getters and Setters
+    public MagicalAlert(String message) {
+        this.message = message;
+        this.date = LocalDateTime.now();
+    }
 
     public Integer getId() {
         return id;
@@ -52,36 +22,19 @@ public class MagicalAlert {
         this.id = id;
     }
 
-    public Tamagotchi getTamagotchi() {
-        return tamagotchi;
+    public String getMessage() {
+        return message;
     }
 
-    public void setTamagotchi(Tamagotchi tamagotchi) {
-        this.tamagotchi = tamagotchi;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public String getAlertType() {
-        return alertType;
-    }
-
-    public void setAlertType(String alertType) {
-        this.alertType = alertType;
-    }
-
-    public LocalDateTime getAlertTime() {
-        return alertTime;
-    }
-
-    public void setAlertTime(LocalDateTime alertTime) {
-        this.alertTime = alertTime;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }
-

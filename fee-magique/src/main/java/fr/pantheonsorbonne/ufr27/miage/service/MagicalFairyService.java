@@ -1,9 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.model.MagicalAlert;
-
 public interface MagicalFairyService {
-    void handleAlert(MagicalAlert alert);
+    void giveGiftToTamagotchi(Integer tamagotchiId, double amount);
     void giveRandomGift(Integer tamagotchiId);
+    void sendMagicalAlert(String message);
     void removeNeglectedTamagotchi(Integer tamagotchiId);
 }

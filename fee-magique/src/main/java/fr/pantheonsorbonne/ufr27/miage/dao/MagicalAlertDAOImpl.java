@@ -32,12 +32,5 @@ public class MagicalAlertDAOImpl implements MagicalAlertDAO {
                 .getResultList();
     }
 
-    @Override
-    @Transactional
-    public void deleteAlert(Long id) {
-        MagicalAlert alert = em.find(MagicalAlert.class, id);
-        if (alert != null) {
-            em.remove(alert);
-        }
-    }
+
 }

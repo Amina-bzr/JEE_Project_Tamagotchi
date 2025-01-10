@@ -1,19 +1,21 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-
-
-import fr.pantheonsorbonne.ufr27.miage.model.Account;
-import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.camel.*;
+import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.support.DefaultComponent;
-
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
+    String jmsPrefix;
 
+    @Inject
+    CamelContext camelContext;
 
+    @Override
+    public void configure() throws Exception {
+
+    }
 }
-

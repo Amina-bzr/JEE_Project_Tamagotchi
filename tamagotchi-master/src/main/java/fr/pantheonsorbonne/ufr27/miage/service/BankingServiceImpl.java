@@ -2,16 +2,15 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.AccountDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TransactionDAO;
+import fr.pantheonsorbonne.ufr27.miage.exception.*;
 import fr.pantheonsorbonne.ufr27.miage.model.Account;
-import fr.pantheonsorbonne.ufr27.miage.model.Owner;
-import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
 import fr.pantheonsorbonne.ufr27.miage.model.Transaction;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+
 @ApplicationScoped
 public class BankingServiceImpl implements BankingService {
 
@@ -35,7 +34,7 @@ public class BankingServiceImpl implements BankingService {
     @Override
     public Account getAccountByTamagotchi(Integer tamagotchiId) {
         return accountDAO.findAccountByTamagotchiId(tamagotchiId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for Tamagotchi ID: " + tamagotchiId));
+                .orElseThrow(() -> new AccountForTamagotchiNotFoundException(tamagotchiId));
     }
 
     @Override
@@ -59,10 +58,10 @@ public class BankingServiceImpl implements BankingService {
     @Transactional
     public void withdraw(Integer accountId, double amount) {
         Account account = accountDAO.findAccountById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + accountId));
+                .orElseThrow(() -> new AccountNotFoundException(accountId));
 
         if (account.getBalance() < amount) {
-            throw new IllegalArgumentException("Insufficient balance for withdrawal");
+            throw new InsufficientBalanceException(accountId, account.getBalance(), amount);
         }
 
         account.setBalance(account.getBalance() - amount);
@@ -80,13 +79,16 @@ public class BankingServiceImpl implements BankingService {
     @Override
     @Transactional
     public void transfer(Integer fromAccountId, Integer toAccountId, double amount) {
+        if (fromAccountId.equals(toAccountId)) {
+            throw new SameAccountTransferException(fromAccountId);
+        }
         Account fromAccount = accountDAO.findAccountById(fromAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + fromAccountId));
+                .orElseThrow(() -> new AccountNotFoundException(fromAccountId));
         Account toAccount = accountDAO.findAccountById(toAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + toAccountId));
+                .orElseThrow(() -> new AccountNotFoundException(fromAccountId));
 
         if (fromAccount.getBalance() < amount) {
-            throw new IllegalArgumentException("Insufficient balance for transfer");
+            throw new InsufficientBalanceException(fromAccountId, fromAccount.getBalance(), amount);
         }
 
         fromAccount.setBalance(fromAccount.getBalance() - amount);
@@ -115,6 +117,6 @@ public class BankingServiceImpl implements BankingService {
     @Override
     public Transaction getTransactionDetails(Integer transactionId) {
         return transactionDAO.findTransactionById(transactionId)
-                .orElseThrow(() -> new IllegalArgumentException("Transaction not found for ID: " + transactionId));
+                .orElseThrow(() -> new TransactionNotFoundException(transactionId));
     }
 }

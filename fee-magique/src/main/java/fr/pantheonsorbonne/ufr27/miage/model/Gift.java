@@ -1,44 +1,21 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "Gift")
-@NamedQueries({
-        @NamedQuery(
-                name = "Gift.findAll",
-                query = "SELECT g FROM Gift g"
-        ),
-        @NamedQuery(
-                name = "Gift.findByTamagotchi",
-                query = "SELECT g FROM Gift g WHERE g.tamagotchiId = :tamagotchiId"
-        ),
-        @NamedQuery(
-                name = "Gift.findByDateRange",
-                query = "SELECT g FROM Gift g WHERE g.giftTime BETWEEN :startDate AND :endDate"
-        )
-})
 public class Gift {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
-
-    @Column(name = "idTamagotchi", nullable = false)
     private Integer tamagotchiId;
+    private double amount;
+    private LocalDateTime date;
 
-    @Column(name = "giftAmount", nullable = false)
-    private Integer giftAmount; // Montant du cadeau en Gotchi d'or
+    public Gift() {}
 
-    @Column(name = "giftTime", nullable = false)
-    private LocalDateTime giftTime; // Date et heure du cadeau
+    public Gift(Integer tamagotchiId, double amount) {
+        this.tamagotchiId = tamagotchiId;
+        this.amount = amount;
+        this.date = LocalDateTime.now();
+    }
 
-    @Column(name = "description")
-    private String description; // Une description ou un message accompagnant le cadeau
-
-    // Getters et Setters
     public Integer getId() {
         return id;
     }
@@ -55,27 +32,19 @@ public class Gift {
         this.tamagotchiId = tamagotchiId;
     }
 
-    public Integer getGiftAmount() {
-        return giftAmount;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setGiftAmount(Integer giftAmount) {
-        this.giftAmount = giftAmount;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public LocalDateTime getGiftTime() {
-        return giftTime;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setGiftTime(LocalDateTime giftTime) {
-        this.giftTime = giftTime;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }
