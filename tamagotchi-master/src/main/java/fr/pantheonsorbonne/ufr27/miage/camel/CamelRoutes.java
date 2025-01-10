@@ -29,21 +29,6 @@ public class CamelRoutes extends RouteBuilder {
     public void configure() throws Exception {
         camelContext.setTracing(true);
 
-        /* create a tamagothi*/
-       /* from("sjms2:" + jmsPrefix + "createTamagothi")
-                .unmarshal().json(Tamagotchi.class)
-                .bean(adoptionGateway, "addTamagotchi")
-         */
-
-        /*from("sjms2:" + jmsPrefix + "createTamagothi")
-                .autoStartup(isRouteEnabled)
-                .unmarshal().json(Tamagotchi.class)
-                .bean(adoptionGateway, "addTamagotchi")
-                .log("received following information from user service in for tamagotchi creation request: ${body}");
-
-         */
-
-
         from("sjms2:" + jmsPrefix + "removeTamagotchiFromOwner")
                 .unmarshal().json(TamagotchiDTO.class)
                 .bean(adoptionGateway, "removeTamagotchiFromOwner");
@@ -53,7 +38,5 @@ public class CamelRoutes extends RouteBuilder {
                 .to("sjms2:" + jmsPrefix + "TamagotchiAdopted");
 
     }
-
-
 
 }
