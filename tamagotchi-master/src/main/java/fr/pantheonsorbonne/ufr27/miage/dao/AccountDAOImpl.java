@@ -29,6 +29,30 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
+    public Optional<Account> findAccountById(Integer accountId) {
+        try {
+            Account account = em.createQuery("SELECT a FROM Account a WHERE a.id = :accountId", Account.class)
+                    .setParameter("accountId", accountId)
+                    .getSingleResult();
+            return Optional.of(account);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Account> findAccountByTamagotchiId(Integer tamagotchiId) {
+        try {
+            Account account = em.createQuery("SELECT a FROM Account a WHERE a.tamagotchi.id = :tamagotchiId", Account.class)
+                    .setParameter("tamagotchiId", tamagotchiId)
+                    .getSingleResult();
+            return Optional.of(account);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     @Transactional
     public void createAccount(Account account) {
         em.persist(account);
@@ -40,15 +64,13 @@ public class AccountDAOImpl implements AccountDAO {
         em.merge(account);
     }
 
-
     @Override
     @Transactional
     public void deleteAccount(Account account) {
-        em.createQuery("DELETE FROM Account a WHERE a.accountNumber = :accountNumber AND a.balance = :balance AND a.tamagotchiId = :tamagotchiId AND a.creationDate = :creationDate")
+        em.createQuery("DELETE FROM Account a WHERE a.accountNumber = :accountNumber AND a.balance = :balance AND a.tamagotchiId = :tamagotchiId")
                 .setParameter("accountNumber", account.getAccountNumber())
                 .setParameter("balance", account.getBalance())
                 .setParameter("tamagotchiId", account.getTamagotchiId())
-                .setParameter("creationDate", account.getCreationDate())
                 .executeUpdate();
     }
 
@@ -73,6 +95,4 @@ public class AccountDAOImpl implements AccountDAO {
                 .setParameter("accountNumber", accountNumber)
                 .getSingleResult();
     }
-
 }
-

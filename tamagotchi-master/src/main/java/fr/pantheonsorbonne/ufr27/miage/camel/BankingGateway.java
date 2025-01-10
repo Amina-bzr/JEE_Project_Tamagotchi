@@ -1,7 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.TransfertArgent;
+import org.apache.camel.ProducerTemplate;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-public interface BankGateway {
-    void sendDebitToBank(TransfertArgent transfer);
+import java.util.Map;
+
+@ApplicationScoped
+public class BankingGateway {
+
 }

@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 @ApplicationScoped
 public class BankingServiceImpl implements BankingService {
 
@@ -24,28 +23,27 @@ public class BankingServiceImpl implements BankingService {
 
     @Override
     @Transactional
-    public Account createAccount(Owner owner, Tamagotchi tamagotchi) {
+    public Account createAccount(Integer tamagotchiId) {
         Account account = new Account();
-        account.setOwner(owner);
-        account.setTamagotchi(tamagotchi);
+        account.setTamagotchiId(tamagotchiId);
         account.setBalance(100.0); // Default balance
+        account.setAccountNumber(java.util.UUID.randomUUID().toString()); // Generate a unique account number
         accountDAO.createAccount(account);
         return account;
     }
 
     @Override
-    public Account getAccount(Owner owner) {
-        Optional<Account> account = accountDAO.findAccountByOwner(owner);
-        return account.orElseThrow(() -> new IllegalArgumentException("Account not found for owner: " + owner));
+    public Account getAccountByTamagotchi(Integer tamagotchiId) {
+        return accountDAO.findAccountByTamagotchiId(tamagotchiId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found for Tamagotchi ID: " + tamagotchiId));
     }
 
     @Override
     @Transactional
     public void deposit(Integer accountId, double amount) {
         Account account = accountDAO.findAccountById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for id: " + accountId));
+                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + accountId));
         account.setBalance(account.getBalance() + amount);
-
         accountDAO.updateAccount(account);
 
         // Log the transaction
@@ -59,9 +57,9 @@ public class BankingServiceImpl implements BankingService {
 
     @Override
     @Transactional
-    public void withdraw(Long accountId, double amount) {
+    public void withdraw(Integer accountId, double amount) {
         Account account = accountDAO.findAccountById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for id: " + accountId));
+                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + accountId));
 
         if (account.getBalance() < amount) {
             throw new IllegalArgumentException("Insufficient balance for withdrawal");
@@ -83,9 +81,9 @@ public class BankingServiceImpl implements BankingService {
     @Transactional
     public void transfer(Integer fromAccountId, Integer toAccountId, double amount) {
         Account fromAccount = accountDAO.findAccountById(fromAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for id: " + fromAccountId));
+                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + fromAccountId));
         Account toAccount = accountDAO.findAccountById(toAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for id: " + toAccountId));
+                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + toAccountId));
 
         if (fromAccount.getBalance() < amount) {
             throw new IllegalArgumentException("Insufficient balance for transfer");
@@ -97,14 +95,15 @@ public class BankingServiceImpl implements BankingService {
         accountDAO.updateAccount(fromAccount);
         accountDAO.updateAccount(toAccount);
 
-        // Log the transaction
-        Transaction transaction = new Transaction();
-        transaction.setAccount(fromAccount);
-        transaction.setAmount(-amount);
-        transaction.setType("TRANSFER_OUT");
-        transaction.setTimestamp(LocalDateTime.now());
-        transactionDAO.createTransaction(transaction);
+        // Log the transaction for sender
+        Transaction transactionOut = new Transaction();
+        transactionOut.setAccount(fromAccount);
+        transactionOut.setAmount(-amount);
+        transactionOut.setType("TRANSFER_OUT");
+        transactionOut.setTimestamp(LocalDateTime.now());
+        transactionDAO.createTransaction(transactionOut);
 
+        // Log the transaction for receiver
         Transaction transactionIn = new Transaction();
         transactionIn.setAccount(toAccount);
         transactionIn.setAmount(amount);
@@ -116,6 +115,6 @@ public class BankingServiceImpl implements BankingService {
     @Override
     public Transaction getTransactionDetails(Integer transactionId) {
         return transactionDAO.findTransactionById(transactionId)
-                .orElseThrow(() -> new IllegalArgumentException("Transaction not found for id: " + transactionId));
+                .orElseThrow(() -> new IllegalArgumentException("Transaction not found for ID: " + transactionId));
     }
 }

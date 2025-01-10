@@ -7,15 +7,15 @@ import fr.pantheonsorbonne.ufr27.miage.model.Account;
 
 public interface BankingService {
 
-    Account createAccount(Long userId, Long tamagotchiId);
+    Account createAccount(Integer tamagotchiId);
 
-    Account getAccount(Long userId);
+    Account getAccountByTamagotchi(Integer tamagotchiId);
 
-    void deposit(Long accountId, double amount);
+    void deposit(Integer accountId, double amount);
 
-    void withdraw(Long accountId, double amount);
+    void withdraw(Integer accountId, double amount);
 
-    void transfer(Long fromAccountId, Long toAccountId, double amount);
+    void transfer(Integer fromAccountId, Integer toAccountId, double amount);
 
-    Transaction getTransactionDetails(Long transactionId);
+    Transaction getTransactionDetails(Integer transactionId);
 }

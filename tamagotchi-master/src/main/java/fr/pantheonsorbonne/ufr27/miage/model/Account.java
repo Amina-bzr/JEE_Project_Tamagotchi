@@ -15,16 +15,11 @@ public class Account {
     @Column(nullable = false)
     private double balance;
 
-    @OneToOne
-    @JoinColumn(name = "idTamagotchi", nullable = false)
-    private Tamagotchi tamagotchi;
-
-    @ManyToOne
-    @JoinColumn(name = "idOwner" , nullable = false)
-    private Owner owner; // Association avec un utilisateur
 
     @Column(nullable = false)
-    private LocalDateTime creationDate;
+    private Integer tamagotchiId; // ID du Tamagotchi associé (lié au DTO)
+
+
 
     // Getters and Setters
     public Integer getId() {
@@ -35,14 +30,13 @@ public class Account {
         this.id = id;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
     public double getBalance() {
         return balance;
     }
@@ -51,43 +45,30 @@ public class Account {
         this.balance = balance;
     }
 
-    public Tamagotchi getTamagotchi() {
-        return tamagotchi;
+    public Integer getTamagotchiId() {
+        return tamagotchiId;
     }
 
-    public void setTamagotchi(Tamagotchi tamagotchi) {
-        this.tamagotchi = tamagotchi;
+    public Integer setTamagotchiId(Integer tamagotchiId) {
+        this.tamagotchiId = tamagotchiId;
     }
 
-    public Owner getOwner() {
-        return owner;
-    }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
 
     // Default constructor
-    public Account(){
-    };
+    public Account() {
+    }
 
-    public Account(Integer id,String accountNumber,Tamagotchi tamagotchi,Owner owner) {
+    // Constructor
+    public Account(String accountNumber, Integer tamagotchiId) {
+        this.accountNumber = accountNumber;
+        this.tamagotchiId = tamagotchiId;
         this.balance = 100.0; // Default balance is 100 Gotchi d'or
-        this.creationDate = LocalDateTime.now();
     }
 
     @Override
     public String toString() {
         return "Account [id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + "]";
     }
-
 
 }
