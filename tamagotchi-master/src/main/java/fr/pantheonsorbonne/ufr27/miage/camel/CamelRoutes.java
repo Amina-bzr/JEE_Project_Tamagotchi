@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 
+import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
@@ -24,7 +25,8 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     AdoptionGateway adoptionGateway;
 
-
+    @Inject
+    BoutiqueGateway boutiqueGateway;
     @Override
     public void configure() throws Exception {
         camelContext.setTracing(true);
@@ -32,6 +34,26 @@ public class CamelRoutes extends RouteBuilder {
         from("sjms2:" + jmsPrefix + "removeTamagotchiFromOwner")
                 .unmarshal().json(TamagotchiDTO.class)
                 .bean(adoptionGateway, "removeTamagotchiFromOwner");
+
+
+        from("direct:getAllProductsFromBoutique")
+                .marshal().json()
+                .to("sjms2:" + jmsPrefix + "getAllProductsRequest") ;// Envoi à Boutique via SJMS2
+
+        from("direct:getProductsByCategoryFromBoutique")
+                .marshal().json()
+                .to("sjms2:" + jmsPrefix + "getProductsByCategoryRequest") ;// Envoi à Boutique via SJMS2
+
+
+        from("direct:achat")
+                .log("demande achat envoyée")
+                .marshal().json()
+                .to("sjms2:" + jmsPrefix + "purchaseProductRequest") ;// Envoi à Boutique via SJMS2
+
+
+        from ("sjms2:" + jmsPrefix + "purchaseConfirmation")
+                .unmarshal().json(ProductDTO.class)
+                .bean(boutiqueGateway, "saveToInventory");
 
 
         //SERVICE ADOPT -----> FEE

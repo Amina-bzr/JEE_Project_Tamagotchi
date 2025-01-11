@@ -12,6 +12,8 @@
     <module>tamagotchi-user</module>
     <module>tamagotchi-master</module>
     <module>fee-magique</module>
+    <module>boutique</module>
+
   </modules>
   <dependencyManagement>
     <dependencies>
