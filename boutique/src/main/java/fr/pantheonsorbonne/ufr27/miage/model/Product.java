@@ -11,13 +11,10 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Génération automatique de l'ID
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false) // Champ non nul
     private String name;
-
-    @Column(nullable = false) // Champ non nul
-    private String description;
 
     @Column(nullable = false) // Champ non nul
     private Double price;
@@ -32,9 +29,8 @@ public class Product {
     public Product() {}
 
     // Constructeur personnalisé (optionnel)
-    public Product(String name, String description, Double price, String category, int quantityAvailable) {
+    public Product(String name, Double price, String category, int quantityAvailable) {
         this.name = name;
-        this.description = description;
         this.price = price;
         this.category = category;
         this.quantityAvailable = quantityAvailable;
@@ -42,11 +38,11 @@ public class Product {
 
     // Getters et Setters
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -58,13 +54,6 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public Double getPrice() {
         return price;
@@ -96,7 +85,6 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", price=" + price +
                 ", category='" + category + '\'' +
                 ", quantityAvailable=" + quantityAvailable +

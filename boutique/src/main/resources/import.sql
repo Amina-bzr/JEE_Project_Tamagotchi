@@ -5,6 +5,12 @@
 --(2, 'Tama2', 2, 0, 100, 100, 100, 'good'), --odd
 --(3, 'Tama3', NULL, 0, 100, 100, 100, 'good'); --no owner
 
+REPLACE INTO `Product` (`name`, `category`, `price`, `quantityAvailable`)
+        VALUES ('Bonnet Rouge', 'Vetements', 5.99, 50);
 
---REPLACE INTO `Owner` (`idOwner`, `fname`, `lname`, `username`)
-        --VALUES (1, 'Amina', 'Bouzar', 'fenn'), (2, 'Odette', 'Odd', 'odd');
+-- Création de la table Product
+
+
+-- Insertion de données dans la table Product
+
+-- Catégorie : Vêtements

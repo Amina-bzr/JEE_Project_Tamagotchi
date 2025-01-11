@@ -23,7 +23,7 @@ public class ProductDAO {
                 .getResultList();
     }
 
-    public Product findById(Long id) {
+    public Product findById(Integer id) {
         return em.find(Product.class, id);
     }
 
@@ -35,7 +35,7 @@ public class ProductDAO {
         em.merge(product);
     }
 
-    public void delete(Long id) {
+    public void delete(Integer id) {
         Product product = findById(id);
         if (product != null) {
             em.remove(product);

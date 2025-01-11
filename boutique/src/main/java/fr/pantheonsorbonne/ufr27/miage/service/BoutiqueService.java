@@ -29,7 +29,7 @@ public class BoutiqueService {
      * @return Le produit correspondant à l'ID.
      * @throws RuntimeException Si aucun produit n'est trouvé avec cet ID.
      */
-    public Product getProductById(Long id) {
+    public Product getProductById(Integer id) {
         Product product = productDAO.findById(id);
         if (product == null) {
             throw new RuntimeException("Produit non trouvé avec l'ID " + id);
@@ -51,20 +51,19 @@ public class BoutiqueService {
      * Gère l'achat d'un produit.
      *
      * @param id       L'identifiant du produit à acheter.
-     * @param quantity La quantité demandée.
      * @return True si l'achat est réussi, sinon une exception est levée.
      * @throws RuntimeException Si le produit n'existe pas ou si la quantité est insuffisante.
      */
-    public boolean purchaseProduct(Long id, int quantity) {
+    public boolean purchaseProduct(Integer id ) {
         Product product = getProductById(id);
 
         // Vérifie la quantité disponible
-        if (product.getQuantityAvailable() < quantity) {
-            throw new RuntimeException("Quantité insuffisante pour le produit : " + product.getName());
+        if (product.getQuantityAvailable() == 0) {
+            throw new RuntimeException("Rupture du stock" + product.getName());
         }
 
         // Met à jour la quantité disponible
-        product.setQuantityAvailable(product.getQuantityAvailable() - quantity);
+        product.setQuantityAvailable(product.getQuantityAvailable() - 1);
         productDAO.update(product); // Sauvegarde la mise à jour dans la base de données
 
         return true;
