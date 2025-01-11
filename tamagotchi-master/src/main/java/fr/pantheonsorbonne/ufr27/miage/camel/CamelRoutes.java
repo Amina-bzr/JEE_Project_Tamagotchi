@@ -33,6 +33,8 @@ public class CamelRoutes extends RouteBuilder {
                 .unmarshal().json(TamagotchiDTO.class)
                 .bean(adoptionGateway, "removeTamagotchiFromOwner");
 
+
+        //SERVICE ADOPT -----> FEE
         from("direct:TamagotchiAdopted")//please give him a gift !
                 .marshal().json()
                 .to("sjms2:" + jmsPrefix + "TamagotchiAdopted");

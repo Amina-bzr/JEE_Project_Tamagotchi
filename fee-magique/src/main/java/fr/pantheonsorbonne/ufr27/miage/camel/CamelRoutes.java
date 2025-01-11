@@ -7,6 +7,7 @@ import org.apache.camel.builder.RouteBuilder;
 
 
 import fr.pantheonsorbonne.ufr27.miage.dto.*;
+import org.apache.camel.model.RouteDefinition;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 
@@ -30,6 +31,9 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
+        RouteDefinition removeTamagotchiFromOwner = from("sjms2:" + jmsPrefix + "TamagotchiAdopted")
+                .unmarshal().json(TamagotchiDTO.class)
+                .bean(adoptionGateway, "removeTamagotchiFromOwner");
 
 
     }

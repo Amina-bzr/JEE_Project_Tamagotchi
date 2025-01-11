@@ -49,7 +49,7 @@ public class Account {
         return tamagotchiId;
     }
 
-    public Integer setTamagotchiId(Integer tamagotchiId) {
+    public void setTamagotchiId(Integer tamagotchiId) {
         this.tamagotchiId = tamagotchiId;
     }
 
