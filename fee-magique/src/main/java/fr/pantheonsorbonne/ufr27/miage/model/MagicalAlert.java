@@ -1,7 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.Owner;
-import fr.pantheonsorbonne.ufr27.miage.dto.Tamagotchi;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
         ),
         @NamedQuery(
                 name = "MagicalAlert.findByTamagotchi",
-                query = "SELECT m FROM MagicalAlert m WHERE m.tamagotchi.id = :tamagotchiId"
+                query = "SELECT m FROM MagicalAlert m WHERE m.idTamagotchi = :idTamagotchi"
         )
 })
 public class MagicalAlert {
@@ -28,19 +26,23 @@ public class MagicalAlert {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "idTamagotchi", nullable = false)
-    private Tamagotchi tamagotchi;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "idOwner", nullable = false)
-    private Owner owner;
+    @Column(name = "idTamagotchi", nullable = false)
+    private Integer idTamagotchi;
 
     @Column(name = "alertType", nullable = false)
     private String alertType;
 
     @Column(name = "alertTime", nullable = false)
     private LocalDateTime alertTime;
+
+    public MagicalAlert() {
+    }
+
+    public MagicalAlert(Integer idTamagotchi, String alertType, LocalDateTime alertTime) {
+        this.idTamagotchi = idTamagotchi;
+        this.alertType = alertType;
+        this.alertTime = alertTime;
+    }
 
     // Getters and Setters
 
@@ -52,21 +54,14 @@ public class MagicalAlert {
         this.id = id;
     }
 
-    public Tamagotchi getTamagotchi() {
-        return tamagotchi;
+    public Integer getIdTamagotchi() {
+        return idTamagotchi;
     }
 
-    public void setTamagotchi(Tamagotchi tamagotchi) {
-        this.tamagotchi = tamagotchi;
+    public void setIdTamagotchi(Integer idTamagotchi) {
+        this.idTamagotchi = idTamagotchi;
     }
 
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
 
     public String getAlertType() {
         return alertType;

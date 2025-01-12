@@ -21,11 +21,13 @@ public class MagicalAlertDAOImpl implements MagicalAlertDAO {
     }
 
     @Override
+    @Transactional
     public Collection<MagicalAlert> getAllAlerts() {
         return em.createQuery("SELECT a FROM MagicalAlert a", MagicalAlert.class).getResultList();
     }
 
     @Override
+    @Transactional
     public Collection<MagicalAlert> getAlertsByType(String alertType) {
         return em.createQuery("SELECT a FROM MagicalAlert a WHERE a.alertType = :type", MagicalAlert.class)
                 .setParameter("type", alertType)
@@ -34,7 +36,7 @@ public class MagicalAlertDAOImpl implements MagicalAlertDAO {
 
     @Override
     @Transactional
-    public void deleteAlert(Long id) {
+    public void deleteAlert(Integer id) {
         MagicalAlert alert = em.find(MagicalAlert.class, id);
         if (alert != null) {
             em.remove(alert);

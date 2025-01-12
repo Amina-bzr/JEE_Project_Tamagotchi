@@ -7,6 +7,8 @@ public class TamagotchiDTO {
     String state;
 
 
+    public TamagotchiDTO() {};
+
     public TamagotchiDTO(Integer id, String state){
         this.id = id;
         this.state = state;

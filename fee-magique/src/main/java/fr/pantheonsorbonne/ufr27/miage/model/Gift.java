@@ -3,7 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+
 @Table(name = "Gift")
 @NamedQueries({
         @NamedQuery(
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
                 query = "SELECT g FROM Gift g WHERE g.giftTime BETWEEN :startDate AND :endDate"
         )
 })
+@Entity
 public class Gift {
 
     @Id
@@ -30,13 +31,23 @@ public class Gift {
     private Integer tamagotchiId;
 
     @Column(name = "giftAmount", nullable = false)
-    private Integer giftAmount; // Montant du cadeau en Gotchi d'or
+    private Integer giftAmount; //Montant du cadeau en Gotchi d'or
 
     @Column(name = "giftTime", nullable = false)
-    private LocalDateTime giftTime; // Date et heure du cadeau
+    private LocalDateTime giftTime; //date et heure du cadeau
 
-    @Column(name = "description")
-    private String description; // Une description ou un message accompagnant le cadeau
+    @Column(name = "description", nullable = true)
+    private String description;
+
+    public Gift() {
+    }
+
+    public Gift(Integer tamagotchiId, Integer giftAmount, LocalDateTime giftTime, String description) {
+        this.tamagotchiId = tamagotchiId;
+        this.giftAmount = giftAmount;
+        this.giftTime = giftTime;
+        this.description = description;
+    }
 
     // Getters et Setters
     public Integer getId() {

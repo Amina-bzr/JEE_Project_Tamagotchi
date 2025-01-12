@@ -8,6 +8,8 @@ public class ProductDTO {
     private String categProduit;
 
 
+    public ProductDTO() {};
+
     // envoi de master à boutique ( ACHAT )
     public ProductDTO(Integer tamagotchiId, Integer productId){
         this.productId = productId;

@@ -1,14 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
-import fr.pantheonsorbonne.ufr27.miage.service.ProductService;
+import fr.pantheonsorbonne.ufr27.miage.service.InventoryService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 
 import java.io.IOException;
-import java.util.Map;
 
 @ApplicationScoped
 public class BoutiqueGateway {
@@ -17,7 +16,7 @@ public class BoutiqueGateway {
     CamelContext camelContext;
 
     @Inject
-    ProductService productService;
+    InventoryService productService;
 
     public String getAllProducts() {
         try (ProducerTemplate template = camelContext.createProducerTemplate()) {

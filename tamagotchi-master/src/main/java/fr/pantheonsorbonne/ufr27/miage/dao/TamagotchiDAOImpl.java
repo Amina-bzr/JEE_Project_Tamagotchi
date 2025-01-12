@@ -19,14 +19,12 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
     @PersistenceContext
     EntityManager em;
 
-    // Get all Tamagotchis
     @Override
     @Transactional
     public List<Tamagotchi> getTamagotchis() {
         return em.createQuery("SELECT t FROM Tamagotchi t", Tamagotchi.class).getResultList();
     }
 
-    // Get all Tamagotchis by idOwner
     @Override
     @Transactional
     public List<Tamagotchi> getTamagotchisByOwner(int idOwner) {
@@ -36,7 +34,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
     }
 
     ;
-    // Get all Tamagotchis without owner
     @Override
     @Transactional
     public List<Tamagotchi> getTamagotchisWithoutOwner() {
@@ -44,7 +41,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
                 .getResultList();
     }
 
-    // Get a specific Tamagotchi by idTamagotchi
     @Override
     @Transactional
     public Tamagotchi getTamagotchiById(Integer idTamagotchi) {
@@ -57,7 +53,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
         }
     }
 
-    // Delete a Tamagotchi by idTamagotchi
     @Override
     @Transactional
     public void deleteTamagotchi(Integer idTamagotchi) {
@@ -69,7 +64,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
         }
     }
 
-    // Update a Tamagotchi's details
     @Override
     @Transactional
     public Tamagotchi updateTamagotchi(Tamagotchi tamagotchi) {
@@ -86,7 +80,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
         return null; //Tamagotchi not found
     }
 
-    // Add a new Tamagotchi
     @Override
     @Transactional
     public Tamagotchi addTamagotchi(Tamagotchi tamagotchi) {

@@ -2,6 +2,8 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 import fr.pantheonsorbonne.ufr27.miage.camel.AdoptionGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.TamagotchiDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OwnerDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.AlertDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.AlertTypes;
 import fr.pantheonsorbonne.ufr27.miage.exception.OwnerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiHasOwner;
 import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiNotFoundException;
@@ -30,6 +32,9 @@ public class AdoptionService {
     TamagotchiDAO tamagotchiDAO;
 
     @Inject
+    AdoptionGateway adoptionGateway;
+
+    @Inject
     OwnerDAO ownerDAO;
 
 
@@ -54,7 +59,10 @@ public class AdoptionService {
         System.out.println("\nIN adoptionSERVICE\nowner is " + newTamagotchi.owner);
         System.out.println("\name is " + newTamagotchi.name);
         //add compte bancaire
-        this.tamagotchiDAO.addTamagotchi(newTamagotchi);
+        Tamagotchi createdTamagotchi = this.tamagotchiDAO.addTamagotchi(newTamagotchi);
+        //send creation alert to magical fairy
+        AlertDTO alert = new AlertDTO(createdTamagotchi.getIdTamagotchi(), AlertTypes.CREATED);
+        this.adoptionGateway.sendAdoptionAlert(alert);
         return newTamagotchi;
     }
     public Tamagotchi updateTamagotchiOwner(Integer tamagotchiId, Integer ownerId) throws TamagotchiNotFoundException, TamagotchiHasOwner {
@@ -62,8 +70,16 @@ public class AdoptionService {
         if (tamagotchi == null) throw new TamagotchiNotFoundException("Tamagotchi with ID "+tamagotchiId+" not found.");
         if (tamagotchi.owner != null) throw new TamagotchiHasOwner("Tamagotchi " + tamagotchiId + " can't be adopted, it already has an owner : " + tamagotchi.owner.getUsername());
         tamagotchi.setOwner(ownerId == null ? null : ownerDAO.getOwner(ownerId));
+        tamagotchi.setHappiness(tamagotchi.getHappiness() + 20); //new parent! => happy tamagotchi!
         this.tamagotchiDAO.updateTamagotchi(tamagotchi);
+        //send adoption alert to magical fairy
+        AlertDTO alert = new AlertDTO(tamagotchiId, AlertTypes.ADOPTED);
+        this.adoptionGateway.sendAdoptionAlert(alert);
         return tamagotchi;
+    }
+
+    public Tamagotchi updateTamagotchi(Tamagotchi tamagotchi) {
+        return this.tamagotchiDAO.updateTamagotchi(tamagotchi);
     }
 
     @Transactional

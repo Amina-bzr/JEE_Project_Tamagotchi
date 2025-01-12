@@ -18,7 +18,7 @@ public interface AdoptionResource {
 
     @Path("/{idOwner}/adopt/{idTamagotchi}")
     @PUT
-    public Response createTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("idTamagotchi") Integer idTamagotchi);
+    public Response adoptTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("idTamagotchi") Integer idTamagotchi);
 
     @Path("/tamagotchis")
     @GET

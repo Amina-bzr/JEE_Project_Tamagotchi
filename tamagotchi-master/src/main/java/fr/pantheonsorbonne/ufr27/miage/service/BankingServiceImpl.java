@@ -21,6 +21,9 @@ public class BankingServiceImpl implements BankingService {
     @Inject
     TransactionDAO transactionDAO;
 
+    @Inject
+    AdoptionService adoptionService;
+
     @Override
     @Transactional
     public Account createAccount(Integer tamagotchiId) {
@@ -39,7 +42,6 @@ public class BankingServiceImpl implements BankingService {
     }
 
     @Override
-    @Transactional
     public void deposit(Integer accountId, double amount) {
         Account account = accountDAO.findAccountById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + accountId));
@@ -53,6 +55,12 @@ public class BankingServiceImpl implements BankingService {
         transaction.setType("DEPOSIT");
         transaction.setTimestamp(LocalDateTime.now());
         transactionDAO.createTransaction(transaction);
+        //update happiness points
+        Tamagotchi tamagotchi = adoptionService.getTamagotchiService(account.getTamagotchiId());
+        tamagotchi.setHappiness(tamagotchi.getHappiness() + 5); //new money => happy tamagotchi!
+        System.out.println("Received money, so happy!");
+        adoptionService.updateTamagotchi(tamagotchi);
+        System.out.println("Deposited " + amount+5 + " to Tamagotchi" + tamagotchi.getIdTamagotchi() + tamagotchi.getName());
     }
 
     @Override

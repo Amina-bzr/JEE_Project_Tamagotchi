@@ -1,4 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
+import fr.pantheonsorbonne.ufr27.miage.camel.AdoptionGateway;
+import fr.pantheonsorbonne.ufr27.miage.dto.AlertDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.AlertTypes;
 import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 import jakarta.inject.Inject;
@@ -17,14 +20,21 @@ public class AdoptionResource {
     @Inject
     BankingService bankingService;
 
+    @Inject
+    AdoptionGateway adoptionGateway;
+
     //create tamagotchi endpoint
     @Path("/{idOwner}/create/{name}")
     @POST
     public Response createTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("name") String name) {
         System.out.println("name is " + name);
         Tamagotchi newTamagotchi = this.adoptionService.addTamagotchiService(name, idOwner);
+        System.out.println("ATTEMPTING to create account for tamagotchi with id : " + newTamagotchi.getIdTamagotchi());
         this.bankingService.createAccount(newTamagotchi.getIdTamagotchi());
         String responseMessage = "Tamagotchi created successfully! " + newTamagotchi.toString();
+        //request gift from fairy
+        adoptionGateway.sendAdoptionAlert(new AlertDTO(newTamagotchi.getIdTamagotchi(), AlertTypes.CREATED));
+        //response
         return Response.status(Response.Status.CREATED)
                 .entity(responseMessage)
                 .build();
@@ -32,17 +42,15 @@ public class AdoptionResource {
 
     @Path("/{idOwner}/adopt/{idTamagotchi}")
     @PUT
-    public Response createTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("idTamagotchi") Integer idTamagotchi) {
+    public Response adoptTamagotchi(@PathParam("idOwner") Integer idOwner, @PathParam("idTamagotchi") Integer idTamagotchi) {
         System.out.println("owner is " + idOwner + " Tamagotchi " + idTamagotchi);
-
-        //update the owner of the tamagotchi
         Tamagotchi updatedTamagotchi = this.adoptionService.updateTamagotchiOwner(idTamagotchi, idOwner);
-
-        //construct a response message
         String responseMessage = "Tamagotchi created successfully! " + updatedTamagotchi.toString();
-
+        //request gift from fairy
+        adoptionGateway.sendAdoptionAlert(new AlertDTO(updatedTamagotchi.getIdTamagotchi(), AlertTypes.ADOPTED));
+        //response
         return Response.status(Response.Status.OK)
-                .entity(responseMessage) // Returning plain text message
+                .entity(responseMessage)
                 .build();
     }
 

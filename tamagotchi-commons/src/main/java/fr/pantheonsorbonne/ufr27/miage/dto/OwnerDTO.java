@@ -1,9 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class Owner {
+public class OwnerDTO {
     Integer idOwner;
 
-    public Owner() {
-
+    public OwnerDTO() {
     }
 }

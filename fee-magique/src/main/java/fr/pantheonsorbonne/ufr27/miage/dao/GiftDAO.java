@@ -15,21 +15,25 @@ public class GiftDAO {
     @PersistenceContext
     private EntityManager em;
 
+
     @Transactional
     public void createGift(Gift gift) {
         em.persist(gift);
     }
 
+    @Transactional
     public List<Gift> findAllGifts() {
         return em.createNamedQuery("Gift.findAll", Gift.class).getResultList();
     }
 
+    @Transactional
     public List<Gift> findGiftsByTamagotchi(Integer tamagotchiId) {
         return em.createNamedQuery("Gift.findByTamagotchi", Gift.class)
                 .setParameter("tamagotchiId", tamagotchiId)
                 .getResultList();
     }
 
+    @Transactional
     public List<Gift> findGiftsByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return em.createNamedQuery("Gift.findByDateRange", Gift.class)
                 .setParameter("startDate", startDate)

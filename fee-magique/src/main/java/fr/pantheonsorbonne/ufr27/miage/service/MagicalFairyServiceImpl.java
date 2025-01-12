@@ -1,12 +1,15 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import fr.pantheonsorbonne.ufr27.miage.camel.AlertGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.GiftDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.MagicalAlertDAO;
-import fr.pantheonsorbonne.ufr27.miage.model.MagicalAlert;
+import fr.pantheonsorbonne.ufr27.miage.dto.AlertDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.GiftDTO;
+import fr.pantheonsorbonne.ufr27.miage.model.Gift;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import java.util.Random;
+import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class MagicalFairyServiceImpl implements MagicalFairyService {
@@ -17,45 +20,33 @@ public class MagicalFairyServiceImpl implements MagicalFairyService {
     @Inject
     GiftDAO giftDAO;
 
-
     @Inject
-    BankingService bankingService;
+    AlertGateway alertGateway;
 
-    @Inject
-    AdoptionService adoptionService;
 
     @Override
-    public void handleAlert(MagicalAlert alert) {
-        alertDAO.saveAlert(alert);
-
-        if ("neglect".equals(alert.getAlertType())) {
-            removeNeglectedTamagotchi(alert.getTamagotchiId());
-        } else {
-            giveRandomGift(alert.getTamagotchiId());
-        }
+    public void handleAlert(AlertDTO alert) {
+//        TamagotchiDTO tamagotchi = new TamagotchiDTO(alert.getIdTamagotchi());
+//        if ("neglect".equals(alert.getAlertType())) { //alerte qui vient du service soins
+//            // tamagotchi negligé (ex: mort) => informer service adoption pour retirer le tamagotchi de son proprietaire
+//            adoptionGateway.sendOwnerRemovalRequest(tamagotchi);
+//        } else { //other scenarios => gift
+//            giveGift(alert.getIdTamagotchi(), null);
+//        }
     }
 
     @Override
-    public void giveRandomGift(Integer tamagotchiId) {
-        Random random = new Random();
-        int giftAmount = random.nextInt(50) + 1; // Cadeau aléatoire entre 1 et 50 Gotchi d'or
-
-        // Créer un nouvel objet Gift
-        GiftDAO gift = new Gift();
-        gift.setTamagotchiId(tamagotchiId);
-        gift.setGiftAmount(giftAmount);
-        gift.setGiftTime(LocalDateTime.now());
-        gift.setDescription("A magical gift from the Fairy!");
-
-        // Enregistrer le cadeau
-        giftDAO.createGift(gift);
-
-        System.out.println("Gift of " + giftAmount + " Gotchi d'or given to Tamagotchi ID: " + tamagotchiId);
+    public GiftDTO giveGift(GiftDTO gift) {
+        Gift newGift = new Gift();
+        newGift.setTamagotchiId(gift.getTamagotchiId());
+        newGift.setGiftTime(LocalDateTime.now());
+        newGift.setGiftAmount(gift.getGiftAmount());
+        newGift.setDescription(gift.getDescription());
+        giftDAO.createGift(newGift);
+        System.out.println("MAGICAL FAIRY SERVICE : Gift of " + gift.getGiftAmount() + " Gotchi d'or given to Tamagotchi ID: " + gift.getTamagotchiId());
+        return gift;
     }
 
-    @Override
-    public void removeNeglectedTamagotchi(Integer tamagotchiId) {
-        adoptionService.removeTamagotchiFromOwner(tamagotchiId);
-        System.out.println("Tamagotchi ID " + tamagotchiId + " retiré de son propriétaire pour négligence.");
-    }
+
+
 }

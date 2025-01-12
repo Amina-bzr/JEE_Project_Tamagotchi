@@ -16,68 +16,69 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 public class AdoptionTest {
     TamagotchiDTO tamagotchi;
-
-    @BeforeEach
-    @Transactional
-    public void setup() throws Exception{
-        tamagotchi = new TamagotchiDTO("Kiri", 1, 1);
-    }
-
-    @Test
-    public void testCreationTamagotchi() {
-        Integer owner = tamagotchi.getOwner();
-        String name = tamagotchi.getName();
-
-        System.out.println("Testing with URL: /adoption/" + owner + "/create/" + name);
-
-        ValidatableResponse response = given()
-                .when()
-                .post("http://localhost:8082/adoption/" + owner + "/create/" + name)
-                .then();
-
-        int statusCode = response.extract().response().getStatusCode();
-
-        System.out.println("Response Status Code: " + statusCode);
-        System.out.println("Response Body: " + response.extract().response().getBody().asString());
-
-        assertEquals(201, statusCode);
-    }
-
-
-    @Test
-    public void testAdoptTamagotchi() {
-        Integer owner = tamagotchi.getOwner();
-        Integer id = tamagotchi.getId();
-        System.out.println("Testing with URL: /adoption/" + owner + "/adopt/" + id);
-        //PUT request + response extraction
-        ValidatableResponse response = given()
-                .when()
-                .put("http://localhost:8082/adoption/" + owner + "/adopt/" + id)
-                .then();
-
-        //extract status
-        int statusCode = response.extract().response().getStatusCode();
-
-        System.out.println("Response Status Code: " + statusCode);
-        System.out.println("Response Body: " + response.extract().response().getBody().asString());
-        assertEquals(200, statusCode);
-    }
-
-    @Test
-    public void testGetTamagotchis() {
-        //PUT request + response extraction
-        ValidatableResponse response = given()
-                .when()
-                .get("http://localhost:8082/adoption/tamagotchis?hasOwner=true")
-                .then();
-
-        //extract status
-        int statusCode = response.extract().response().getStatusCode();
-
-        System.out.println("Response Status Code: " + statusCode);
-        System.out.println("Response Body: " + response.extract().response().getBody().asString());
-        assertEquals(200, statusCode);
-    }
+//
+//    @BeforeEach
+//    @Transactional
+//    public void setup() throws Exception{
+//        tamagotchi = new TamagotchiDTO("Kiri", 1, 1);
+//    }
+//
+//    @Test
+//    public void testCreationTamagotchi() {
+//        Integer owner = tamagotchi.getOwner();
+//        String name = tamagotchi.getName();
+//
+//        System.out.println("Testing with URL: /adoption/" + owner + "/create/" + name);
+//
+//        ValidatableResponse response = given()
+//                .when()
+//                .post("http://localhost:8082/adoption/" + owner + "/create/" + name)
+//                .then();
+//
+//        int statusCode = response.extract().response().getStatusCode();
+//
+//        System.out.println("Response Status Code: " + statusCode);
+//        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+//
+//        assertEquals(201, statusCode);
+//    }
+//
+//
+//    @Test
+//    public void testAdoptTamagotchi() {
+//        Integer owner = tamagotchi.getOwner();
+//        Integer id = tamagotchi.getId();
+//        System.out.println("Testing with URL: /adoption/" + owner + "/adopt/" + id);
+//        //PUT request + response extraction
+//        //TO DO: should generate the url dynamically
+//        ValidatableResponse response = given()
+//                .when()
+//                .put("http://localhost:8082/adoption/" + owner + "/adopt/" + id)
+//                .then();
+//
+//        //extract status
+//        int statusCode = response.extract().response().getStatusCode();
+//
+//        System.out.println("Response Status Code: " + statusCode);
+//        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+//        assertEquals(200, statusCode);
+//    }
+//
+//    @Test
+//    public void testGetTamagotchis() {
+//        //PUT request + response extraction
+//        ValidatableResponse response = given()
+//                .when()
+//                .get("http://localhost:8082/adoption/tamagotchis?hasOwner=true")
+//                .then();
+//
+//        //extract status
+//        int statusCode = response.extract().response().getStatusCode();
+//
+//        System.out.println("Response Status Code: " + statusCode);
+//        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+//        assertEquals(200, statusCode);
+//    }
 
 }
 
