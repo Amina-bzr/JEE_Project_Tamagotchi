@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -19,7 +20,8 @@ public class Account {
     @Column(nullable = false)
     private Integer tamagotchiId; // ID du Tamagotchi associé (lié au DTO)
 
-
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
 
     // Getters and Setters
     public Integer getId() {
@@ -49,7 +51,7 @@ public class Account {
         return tamagotchiId;
     }
 
-    public Integer setTamagotchiId(Integer tamagotchiId) {
+    public void setTamagotchiId(Integer tamagotchiId) {
         this.tamagotchiId = tamagotchiId;
     }
 
@@ -69,6 +71,14 @@ public class Account {
     @Override
     public String toString() {
         return "Account [id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + "]";
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
 }
