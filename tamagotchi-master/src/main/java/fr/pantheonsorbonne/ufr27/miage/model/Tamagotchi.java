@@ -1,15 +1,71 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Tamagotchi {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTamagotchi", nullable = false)
-    private Integer idTamagotchi;
+    public Integer idTamagotchi;
 
-    // Getters and Setters
+    @ManyToOne
+    @JoinColumn(name = "idOwner", nullable = true)
+    public Owner owner;
+
+    @Column(name = "name", nullable = false, length = 45)
+    public String name;
+
+    @Column(name = "hungry", nullable = false)
+    public Integer hungry;
+
+    @Column(name = "thirst", nullable = false)
+    public Integer thirst;
+
+    @Column(name = "happiness", nullable = false)
+    public Integer happiness;
+
+    @Column(name = "energy", nullable = false)
+    public Integer energy;
+
+
+    @Column(name = "state", nullable = false, length = 45, columnDefinition = "varchar(45) default 'good'")
+    public String state; // "good", "sick", "dead"
+
+    @Column(name = "disease", length = 45)
+    public String disease; // null, "malnutrition", "obesity"
+
+    @Column(name = "lastUpdateTime", nullable = false)
+    public LocalDateTime lastUpdateTime; // Pour gérer les mises à jour automatiques
+
+    @Column(name = "thresholdMin", nullable = false)
+    public Integer thresholdMin = 10; // Seuil minimal pour tous les attributs
+
+    @Column(name = "thresholdMax", nullable = false)
+    public Integer thresholdMax = 100; // Seuil maximal pour tous les attributs
+
+    public Tamagotchi() {
+
+    }
+
+    // Constructeur par défaut
+    public Tamagotchi(Owner owner, String name) {
+        this.owner = owner;
+        this.name = name;
+        this.state = "good";
+        this.energy = 50;      // Début en état équilibré
+        this.happiness = 50;
+        this.hungry = 50;
+        this.thirst = 50;
+        this.lastUpdateTime = LocalDateTime.now(); // Initialisation au moment de la création
+    }
+
+
+    // Getters et Setters
     public Integer getIdTamagotchi() {
         return idTamagotchi;
     }
@@ -17,11 +73,6 @@ public class Tamagotchi {
     public void setIdTamagotchi(Integer idTamagotchi) {
         this.idTamagotchi = idTamagotchi;
     }
-
-
-    @ManyToOne
-    @JoinColumn(name = "idOwner", nullable = true)
-    private Owner owner;
 
     public Owner getOwner() {
         return owner;
@@ -31,9 +82,6 @@ public class Tamagotchi {
         this.owner = owner;
     }
 
-    @Column(name = "name", nullable = false, length = 45)
-    private String name;
-
     public String getName() {
         return name;
     }
@@ -41,10 +89,6 @@ public class Tamagotchi {
     public void setName(String name) {
         this.name = name;
     }
-
-
-    @Column(name = "hungry", nullable = false)
-    private Integer hungry;
 
     public Integer getHungry() {
         return hungry;
@@ -54,25 +98,13 @@ public class Tamagotchi {
         this.hungry = hungry;
     }
 
-    @Column(name = "happiness", nullable = false)
-    private Integer happiness;
+    public Integer getThirst() {
+        return thirst;
+    }
 
-    @Column(name = "energy", nullable = false)
-    private Integer energy;
-
-    @Column(name = "health", nullable = false)
-    private Integer health;
-
-    @Column(name = "state", nullable = false, length = 45, columnDefinition = "varchar(45) default 'good'")
-    private String state; // can be good, sick, dead
-
-
-
-
-
-
-
-
+    public void setThirst(Integer thirst) {
+        this.thirst = thirst;
+    }
 
     public Integer getHappiness() {
         return happiness;
@@ -90,13 +122,6 @@ public class Tamagotchi {
         this.energy = energy;
     }
 
-    public Integer getHealth() {
-        return health;
-    }
-
-    public void setHealth(Integer health) {
-        this.health = health;
-    }
 
     public String getState() {
         return state;
@@ -106,20 +131,48 @@ public class Tamagotchi {
         this.state = state;
     }
 
-    // Default constructor
-    public Tamagotchi() {
-        this.state = "good"; //default state is set t good
-        this.energy=100;
-        this.happiness=100;
-        this.health=100;
-        this.hungry=0;
+    public String getDisease() {
+        return disease;
     }
 
-    // toString method for better readability
+    public void setDisease(String disease) {
+        this.disease = disease;
+    }
+
+    public LocalDateTime getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public Integer getThresholdMin() {
+        return thresholdMin;
+    }
+
+    public void setThresholdMin(Integer thresholdMin) {
+        this.thresholdMin = thresholdMin;
+    }
+
+    public Integer getThresholdMax() {
+        return thresholdMax;
+    }
+
+    public void setThresholdMax(Integer thresholdMax) {
+        this.thresholdMax = thresholdMax;
+    }
+
+
+
+
+    // Méthode toString
     @Override
     public String toString() {
-        return "Tamagotchi [idTamagotchi=" + idTamagotchi + ", owner=" + owner + ", name=" + name +
-                ", hungry=" + hungry + ", happiness=" + happiness + ", energy=" + energy +
-                ", health=" + health + ", state=" + state + "]";
+        return "Tamagotchi [idTamagotchi=" + idTamagotchi + ", owner=" + (owner != null ? owner.getIdOwner() : "null") +
+                ", name=" + name + ", hungry=" + hungry + ", thirst=" + thirst +
+                ", happiness=" + happiness + ", energy=" + energy +
+                ", state=" + state + ", disease=" + disease + ", lastUpdateTime=" + lastUpdateTime +
+                ", thresholdMin=" + thresholdMin + ", thresholdMax=" + thresholdMax + "]";
     }
 }

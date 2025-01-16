@@ -1,11 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.model.Owner;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 
+@ApplicationScoped
 public class OwnerDAOImpl implements OwnerDAO {
 
     private final EntityManager em;

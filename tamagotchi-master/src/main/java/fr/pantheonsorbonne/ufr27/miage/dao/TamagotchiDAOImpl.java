@@ -77,7 +77,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
             existingTamagotchi.setHungry(tamagotchi.getHungry());
             existingTamagotchi.setHappiness(tamagotchi.getHappiness());
             existingTamagotchi.setEnergy(tamagotchi.getEnergy());
-            existingTamagotchi.setHealth(tamagotchi.getHealth());
             existingTamagotchi.setState(tamagotchi.getState());
             return em.merge(existingTamagotchi); // Merge the updated tamagotchi back into the persistence context
         }
