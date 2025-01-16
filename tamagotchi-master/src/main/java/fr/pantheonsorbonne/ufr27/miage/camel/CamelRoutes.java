@@ -7,10 +7,12 @@ import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.jackson.ListJacksonDataFormat;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
 
 
 @ApplicationScoped
@@ -58,29 +60,33 @@ public class CamelRoutes extends RouteBuilder {
 
 
         //*******************************Boutique*******************************
-        from("direct:getAllProductsFromBoutique")
-                .marshal().json()
-                .to("sjms2:" + jmsPrefix + "getAllProductsRequest")
-                .log("MASTER: Sent GET ALL products request to BOUTIQUE.");
-
-        from("direct:getProductsByCategoryFromBoutique")
-                .marshal().json()
-                .log("MASTER: Sending GET products by category ${header.category} request to BOUTIQUE.")
-                .to("sjms2:" + jmsPrefix + "getProductsByCategoryRequest");
+        from("direct:getProductsFromBoutique")
+                .marshal().json() // Marshal the input to JSON
+                .to("sjms2:" + jmsPrefix + "getProductsFromBoutique?exchangePattern=InOut") // Send to JMS and wait for a response
+                .unmarshal(new ListJacksonDataFormat(ProductDTO.class)); // Unmarshal the response back into an object (e.g., List<ProductDTO>)
 
 
-        from("direct:achat")
-                .marshal().json(ProductDTO.class)
-                .log("MASTER: Sent purchase request for product ${body.productId} to BOUTIQUE.")
-                .to("sjms2:" + jmsPrefix + "purchaseProductRequest");
 
-        //TO DO: add gateway between bank and boutique
 
-        from ("sjms2:" + jmsPrefix + "purchaseConfirmation")
-                .unmarshal().json(ProductDTO.class)
-                .log("MASTER: Received purchase confirmation for product ${body.productId} from BOUTIQUE.")
-                .bean(boutiqueGateway, "saveToInventory");
+//
+//        from("direct:getProductsByCategoryFromBoutique")
+//                .marshal().json()
+//                .log("MASTER: Sending GET products by category ${header.category} request to BOUTIQUE.")
+//                .to("sjms2:" + jmsPrefix + "getProductsByCategoryRequest");
 
+//
+//        from("direct:achat")
+//                .marshal().json(ProductDTO.class)
+//                .to("sjms2:" + jmsPrefix + "purchaseProductRequest?exchangePattern=InOut")
+//                .unmarshal().json(ProductDTO.class)
+//                .bean(bankingGateway, "purchaseProduct");
+//
+//        //TO DO: add gateway between bank and boutique
+//
+//        from ("sjms2:" + jmsPrefix + "purchaseConfirmation")
+//                .unmarshal().json(ProductDTO.class)
+//                .bean(boutiqueGateway, "saveToInventory");
+//
 
 
 

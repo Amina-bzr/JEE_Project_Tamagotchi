@@ -32,8 +32,6 @@ public class Tamagotchi {
     @Column(name = "energy", nullable = false)
     public Integer energy;
 
-    @Column(name = "health", nullable = false)
-    public Integer health;
 
     @Column(name = "state", nullable = false, length = 45, columnDefinition = "varchar(45) default 'good'")
     public String state; // "good", "sick", "dead"
@@ -61,7 +59,6 @@ public class Tamagotchi {
         this.state = "good";
         this.energy = 50;      // Début en état équilibré
         this.happiness = 50;
-        this.health = 50;
         this.hungry = 50;
         this.thirst = 50;
         this.lastUpdateTime = LocalDateTime.now(); // Initialisation au moment de la création
@@ -125,13 +122,6 @@ public class Tamagotchi {
         this.energy = energy;
     }
 
-    public Integer getHealth() {
-        return health;
-    }
-
-    public void setHealth(Integer health) {
-        this.health = health;
-    }
 
     public String getState() {
         return state;
@@ -181,7 +171,7 @@ public class Tamagotchi {
     public String toString() {
         return "Tamagotchi [idTamagotchi=" + idTamagotchi + ", owner=" + (owner != null ? owner.getIdOwner() : "null") +
                 ", name=" + name + ", hungry=" + hungry + ", thirst=" + thirst +
-                ", happiness=" + happiness + ", energy=" + energy + ", health=" + health +
+                ", happiness=" + happiness + ", energy=" + energy +
                 ", state=" + state + ", disease=" + disease + ", lastUpdateTime=" + lastUpdateTime +
                 ", thresholdMin=" + thresholdMin + ", thresholdMax=" + thresholdMax + "]";
     }

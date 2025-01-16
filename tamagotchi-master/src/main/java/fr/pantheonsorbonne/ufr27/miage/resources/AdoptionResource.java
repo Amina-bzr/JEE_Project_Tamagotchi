@@ -23,6 +23,7 @@ public class AdoptionResource {
     @Inject
     AdoptionGateway adoptionGateway;
 
+
     //create tamagotchi endpoint
     @Path("/{idOwner}/create/{name}")
     @POST

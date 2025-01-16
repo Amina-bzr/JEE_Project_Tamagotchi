@@ -30,18 +30,6 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
-        //*********************ADOPTION SERVICE COMM
-            //adopted tamagotchi
-        from("sjms2:" + jmsPrefix + "TamagotchiAdopted")
-                .unmarshal().json(TamagotchiDTO.class)
-                .bean(alertGateway, "sendGift")
-                .log("MAGICAL FAIRY: Received gift request for adopted tamagotchi ${body.idTamagotchi} from ADOPTION SERVICE");
-
-            //sending owner removal request to adoption service
-        from("direct:RemoveOwner")
-                .marshal().json(TamagotchiDTO.class)
-                .to("sjms2:" + jmsPrefix + "RemoveOwner")
-                .log("MAGICAL FAIRY: sent owner removal request for neglected tamagotchi ${body.id} to ADOPTION SERVICE.");
 
         //*********************ALERT
             //process received alert
@@ -61,15 +49,31 @@ public class CamelRoutes extends RouteBuilder {
                 .end();
 
 
-//            from("jms:queue:healthAlerts")
-//                    .unmarshal().json(MagicalAlert.class)
-//                    .bean(magicalFairyService, "handleAlert(${body})")
-//                    .log("Handled alert for Tamagotchi ID: ${body.tamagotchiId}");
     }
-
 
     //alert : tamagotchi neglected, adopted, created.
     //giftAmount :
     //          when a tamagotchi is created : 150
     //          when a tamagotchi is adopted : 200
 }   //          otherwise : Random
+
+
+
+
+
+
+    //*********************ADOPTION SERVICE COMM
+    //adopted tamagotchi
+//        from("sjms2:" + jmsPrefix + "TamagotchiAdopted")
+//                .unmarshal().json(TamagotchiDTO.class)
+//                .bean(alertGateway, "sendGift")
+//                .log("MAGICAL FAIRY: Received gift request for adopted tamagotchi ${body.idTamagotchi} from ADOPTION SERVICE");
+//
+//            //sending owner removal request to adoption service
+//        from("direct:RemoveOwner")
+//                .marshal().json(TamagotchiDTO.class)
+//                .to("sjms2:" + jmsPrefix + "RemoveOwner")
+//                .log("MAGICAL FAIRY: sent owner removal request for neglected tamagotchi ${body.id} to ADOPTION SERVICE.");
+
+
+

@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.Product;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.lang.String;
 import java.util.List;
 
 @ApplicationScoped // Permet à Quarkus de gérer le cycle de vie du service

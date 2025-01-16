@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
+import fr.pantheonsorbonne.ufr27.miage.model.Account;
+import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 import fr.pantheonsorbonne.ufr27.miage.service.InventoryService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -8,6 +10,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 
 import java.io.IOException;
+import java.util.List;
 
 @ApplicationScoped
 public class BoutiqueGateway {
@@ -18,19 +21,17 @@ public class BoutiqueGateway {
     @Inject
     InventoryService productService;
 
-    public String getAllProducts() {
-        try (ProducerTemplate template = camelContext.createProducerTemplate()) {
-            return template.requestBody("direct:getAllProductsFromBoutique", null, String.class);
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de la récupération de tous les produits : " + e.getMessage(), e);
-        }
-    }
+    @Inject
+    BankingService bankingService;
 
-    public String getProductsByCategory(String category) {
+
+    public List<ProductDTO> getProducts(String category) {
         try (ProducerTemplate template = camelContext.createProducerTemplate()) {
-            return template.requestBodyAndHeader("direct:getProductsByCategoryFromBoutique", null, "category", category, String.class);
+            System.out.println("Getting products from category " + category);
+            List<ProductDTO> products = template.requestBodyAndHeader("direct:getProductsFromBoutique", null, "category", category, List.class );
+            return products;
         } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de la récupération des produits par catégorie : " + e.getMessage(), e);
+            throw new RuntimeException("Erreur lors de la récupération des produits : " + e.getMessage(), e);
         }
     }
 
@@ -41,6 +42,13 @@ public class BoutiqueGateway {
             throw new RuntimeException(e);
         }
     }
+//    public void withdrawPrice(ProductDTO product) {
+//        try {
+//            Account account = bankingService.getAccountByTamagotchi(product.getTamagotchiId());
+//            this.bankingService.withdraw(account.getId(), product.getPrice());
+//        } catch
+//    }
+
     public void saveToInventory (ProductDTO product) {
         this.productService.saveToInventory(product);
     }

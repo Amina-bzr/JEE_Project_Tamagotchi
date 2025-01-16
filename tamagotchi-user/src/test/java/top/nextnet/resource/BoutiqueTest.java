@@ -1,12 +1,11 @@
 package top.nextnet.resource;
-
+import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
 import io.restassured.response.ValidatableResponse;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 import io.quarkus.test.junit.QuarkusTest;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,13 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @QuarkusTest
-public class AdoptionTest {
+public class BoutiqueTest {
+    ProductDTO product;
     TamagotchiDTO tamagotchi;
 
-  /*  @BeforeEach
+    @BeforeEach
     @Transactional
     public void setup() throws Exception{
-        tamagotchi = new TamagotchiDTO("Kiri", 1, 1);
+        tamagotchi = new TamagotchiDTO("TamaBoutique", 1);
+        product = new ProductDTO(1,1);
     }
 
     @Test
@@ -43,44 +44,33 @@ public class AdoptionTest {
         assertEquals(201, statusCode);
     }
 
-
     @Test
-    public void testAdoptTamagotchi() {
-        Integer owner = tamagotchi.getOwner();
-        Integer id = tamagotchi.getId();
-        System.out.println("Testing with URL: /adoption/" + owner + "/adopt/" + id);
-        //PUT request + response extraction
-        //TO DO: should generate the url dynamically
+    public void testGetProducts() {
         ValidatableResponse response = given()
                 .when()
-                .put("http://localhost:8082/adoption/" + owner + "/adopt/" + id)
+                .get("http://localhost:8082/boutique/products?category=Accessoires")
                 .then();
 
-        //extract status
         int statusCode = response.extract().response().getStatusCode();
 
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + response.extract().response().getBody().asString());
         assertEquals(200, statusCode);
     }
-
+/*
     @Test
-    public void testGetTamagotchis() {
-        //PUT request + response extraction
+    public void testBuyProduct() {
         ValidatableResponse response = given()
                 .when()
-                .get("http://localhost:8082/adoption/tamagotchis?hasOwner=true")
+                .post("http://localhost:8082/boutique/" + product.getTamagotchiId() + "/achat/" + product.getProductId())
                 .then();
 
-        //extract status
         int statusCode = response.extract().response().getStatusCode();
 
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + response.extract().response().getBody().asString());
+
         assertEquals(200, statusCode);
     }
 */
 }
-
-
-
