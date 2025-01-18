@@ -55,17 +55,6 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
 
     @Override
     @Transactional
-    public void deleteTamagotchi(Integer idTamagotchi) {
-        Tamagotchi tamagotchiToDelete = getTamagotchiById(idTamagotchi);
-        if (tamagotchiToDelete != null) {
-            em.remove(tamagotchiToDelete);
-        } else {
-            System.out.println("Le Tamagotchi avec l'ID " + idTamagotchi + " n'existe pas.");
-        }
-    }
-
-    @Override
-    @Transactional
     public Tamagotchi updateTamagotchi(Tamagotchi tamagotchi) {
         Tamagotchi existingTamagotchi = em.find(Tamagotchi.class, tamagotchi.getIdTamagotchi());
         if (existingTamagotchi != null) {
@@ -73,10 +62,15 @@ public class TamagotchiDAOImpl implements TamagotchiDAO {
             existingTamagotchi.setHungry(tamagotchi.getHungry());
             existingTamagotchi.setHappiness(tamagotchi.getHappiness());
             existingTamagotchi.setEnergy(tamagotchi.getEnergy());
+            existingTamagotchi.setThirst(tamagotchi.getThirst());
             existingTamagotchi.setState(tamagotchi.getState());
+            existingTamagotchi.setDisease(tamagotchi.getDisease());
+            existingTamagotchi.setLastUpdateTime(tamagotchi.getLastUpdateTime());
             return em.merge(existingTamagotchi); // Merge the updated tamagotchi back into the persistence context
         }
+        //ICI THROW EXCEPTION NON?
         return null; //Tamagotchi not found
+
     }
 
     @Override

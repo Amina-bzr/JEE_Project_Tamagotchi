@@ -21,9 +21,6 @@ public interface TamagotchiDAO {
     Tamagotchi getTamagotchiById(Integer idTamagotchi);
 
     @Transactional
-    void deleteTamagotchi(Integer idTamagotchi);
-
-    @Transactional
     Tamagotchi updateTamagotchi(Tamagotchi tamagotchi);
 
     @Transactional

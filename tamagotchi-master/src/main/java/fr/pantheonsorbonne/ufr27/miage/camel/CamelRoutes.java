@@ -30,6 +30,9 @@ public class CamelRoutes extends RouteBuilder {
     AdoptionGateway adoptionGateway;
 
     @Inject
+    SoinGateway soinGateway;
+
+    @Inject
     BoutiqueGateway boutiqueGateway;
     @Inject
     BankingGateway bankingGateway;
@@ -51,6 +54,15 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json(AlertDTO.class)
                 .to("sjms2:" + jmsPrefix + "sendAlert")
                 .log("ADOPTION SERVICE: Alert for adopted/created tamagotchi sent to MAGICAL FAIRY.");
+
+
+        //********************************SOIN********************************
+        //SERVICE SOIN -----> FEE : Tamagotchi died!
+        from("direct:SoinAlert")
+                .marshal().json(AlertDTO.class)
+                .to("sjms2:" + jmsPrefix + "sendAlert")
+                .log("SOINSERVICE: Alert for tamagotchi's death sent to MAGICAL FAIRY.");
+
 
         //********************************BANKING********************************
         //SEGGESTION: make different types of gifts! money, item (to inventory) => choice
