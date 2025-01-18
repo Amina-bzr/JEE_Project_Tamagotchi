@@ -2,7 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.dto;
 
 public enum AlertTypes {
     ADOPTED("adopted"),
-    NEGLECT("neglect"),
+    NEGLECT("dead"),
     CREATED("created");
 
     private final String value;

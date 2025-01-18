@@ -64,7 +64,7 @@ public class AdoptionService {
     public Tamagotchi updateTamagotchiOwner(Integer tamagotchiId, Integer ownerId) throws TamagotchiNotFoundException, TamagotchiHasOwner {
         Tamagotchi tamagotchi = this.tamagotchiDAO.getTamagotchiById(tamagotchiId);
         if (tamagotchi == null) throw new TamagotchiNotFoundException("Tamagotchi with ID "+tamagotchiId+" not found.");
-        if (tamagotchi.owner != null) throw new TamagotchiHasOwner("Tamagotchi " + tamagotchiId + " can't be adopted, it already has an owner : " + tamagotchi.owner.getUsername());
+        if (tamagotchi.owner != null && ownerId!=null) throw new TamagotchiHasOwner("Tamagotchi " + tamagotchiId + " can't be adopted, it already has an owner : " + tamagotchi.owner.getUsername());
         tamagotchi.setOwner(ownerId == null ? null : ownerDAO.getOwner(ownerId));
         tamagotchi.setHappiness(tamagotchi.getHappiness() + 20); //new parent! => happy tamagotchi!
         this.tamagotchiDAO.updateTamagotchi(tamagotchi);

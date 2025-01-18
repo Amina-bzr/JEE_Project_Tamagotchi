@@ -13,7 +13,7 @@ public class ResponseMessageHandler {
         if (!available) {
             exchange.getMessage().setBody("Product is unavailable.");
         } else {
-            boolean sufficient = exchange.getMessage().getHeader("sufficient", Boolean.class);
+            Boolean sufficient = exchange.getMessage().getHeader("sufficient", Boolean.class);
             if (sufficient) {
                 exchange.getMessage().setBody("Product bought successfully.");
             } else {

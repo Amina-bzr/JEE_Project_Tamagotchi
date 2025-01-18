@@ -29,6 +29,9 @@ public class CamelRoutes extends RouteBuilder {
     AdoptionGateway adoptionGateway;
 
     @Inject
+    SoinGateway soinGateway;
+
+    @Inject
     BoutiqueGateway boutiqueGateway;
     @Inject
     BankingGateway bankingGateway;
@@ -51,6 +54,15 @@ public class CamelRoutes extends RouteBuilder {
         from("direct:AdoptionAlert")
                 .marshal().json(AlertDTO.class)
                 .to("sjms2:" + jmsPrefix + "sendAlert");
+
+
+        //********************************SOIN********************************
+        //SERVICE SOIN -----> FEE : Tamagotchi died!
+        from("direct:SoinAlert")
+                .marshal().json(AlertDTO.class)
+                .to("sjms2:" + jmsPrefix + "sendAlert")
+                .log("SOINSERVICE: Alert for tamagotchi's death sent to MAGICAL FAIRY.");
+
 
         //********************************BANKING********************************
         //SEGGESTION: make different types of gifts! money, item (to inventory) => choice
@@ -77,7 +89,6 @@ public class CamelRoutes extends RouteBuilder {
                     .when(header("sufficient").isEqualTo(false))
                         .bean(responseMessageHandler)
                         .marshal().json()
-                        .log("Available and unsufficient money.")
                     .stop()
                     .otherwise()
                         .marshal().json()
