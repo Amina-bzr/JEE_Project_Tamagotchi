@@ -19,17 +19,16 @@ public class ProductGateway {
     @Inject
     CamelContext camelContext;
 
-    public void acheter(ProductDTO achat) {
-        this.boutiqueService.purchaseProduct(achat.getId());
+    public ProductDTO purchase(ProductDTO product) { //purchase the product
+        System.out.println("BOUTIQUE: inside purchase,...");
+        this.boutiqueService.purchaseProduct(product.getId());
+        return product;
     }
 
-//    public void purchaseConfirmation(ProductDTO confirmationAchat ) {
-//        try (ProducerTemplate template = camelContext.createProducerTemplate()) {
-//            template.sendBody("direct:confirmationAchat", confirmationAchat);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+
+    public Product getProduct(ProductDTO product) {
+        return this.boutiqueService.getProductById(product.getId());
+    }
 
     public List<Product> getAllProducts() {
         return this.boutiqueService.getAllProducts();

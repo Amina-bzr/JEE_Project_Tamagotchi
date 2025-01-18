@@ -4,7 +4,6 @@ import io.restassured.response.ValidatableResponse;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import fr.pantheonsorbonne.ufr27.miage.dto.TamagotchiDTO;
 import io.quarkus.test.junit.QuarkusTest;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,33 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 public class BoutiqueTest {
     ProductDTO product;
-    TamagotchiDTO tamagotchi;
+    Integer tamagotchiId;
+    Integer tamagotchiUnavailableId;
 
     @BeforeEach
     @Transactional
     public void setup() throws Exception{
-        tamagotchi = new TamagotchiDTO("TamaBoutique", 1);
-        product = new ProductDTO(1,1);
-    }
-
-    @Test
-    public void testCreationTamagotchi() {
-        Integer owner = tamagotchi.getOwner();
-        String name = tamagotchi.getName();
-
-        System.out.println("Testing with URL: /adoption/" + owner + "/create/" + name);
-
-        ValidatableResponse response = given()
-                .when()
-                .post("http://localhost:8082/adoption/" + owner + "/create/" + name)
-                .then();
-
-        int statusCode = response.extract().response().getStatusCode();
-
-        System.out.println("Response Status Code: " + statusCode);
-        System.out.println("Response Body: " + response.extract().response().getBody().asString());
-
-        assertEquals(201, statusCode);
+        tamagotchiId = 5;
+        tamagotchiUnavailableId = 8;
+        product = new ProductDTO(8,tamagotchiId); //product 8 has quantity of 1, only 1st tamagotchi will be able to buy it
     }
 
     @Test
@@ -50,27 +31,45 @@ public class BoutiqueTest {
                 .when()
                 .get("http://localhost:8082/boutique/products?category=Accessoires")
                 .then();
-
         int statusCode = response.extract().response().getStatusCode();
-
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + response.extract().response().getBody().asString());
         assertEquals(200, statusCode);
     }
-/*
+
     @Test
     public void testBuyProduct() {
         ValidatableResponse response = given()
                 .when()
-                .post("http://localhost:8082/boutique/" + product.getTamagotchiId() + "/achat/" + product.getProductId())
+                .post("http://localhost:8082/boutique/" + product.getTamagotchiId() + "/achat/" + product.getId())
                 .then();
-
         int statusCode = response.extract().response().getStatusCode();
-
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + response.extract().response().getBody().asString());
-
         assertEquals(200, statusCode);
     }
-*/
+
+    @Test
+    public void testAlreadyPurchased() {
+        ValidatableResponse response = given()
+                .when()
+                .post("http://localhost:8082/boutique/" + product.getTamagotchiId() + "/achat/" + product.getId())
+                .then();
+        int statusCode = response.extract().response().getStatusCode();
+        System.out.println("Response Status Code: " + statusCode);
+        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+        assertEquals(200, statusCode);
+    }
+
+    @Test
+    public void testProductUnavailable() {
+        ValidatableResponse response = given()
+                .when()
+                .post("http://localhost:8082/boutique/" + tamagotchiUnavailableId + "/achat/" + product.getId())
+                .then();
+        int statusCode = response.extract().response().getStatusCode();
+        System.out.println("Response Status Code: " + statusCode);
+        System.out.println("Response Body: " + response.extract().response().getBody().asString());
+        assertEquals(200, statusCode);
+    }
 }

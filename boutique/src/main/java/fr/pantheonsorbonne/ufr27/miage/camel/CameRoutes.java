@@ -1,5 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.camel.handlers.ProductAvailabilityHandler;
+import fr.pantheonsorbonne.ufr27.miage.camel.handlers.ProductEnricher;
 import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.camel.builder.RouteBuilder;
@@ -18,18 +20,25 @@ public class CameRoutes extends RouteBuilder {
     @Inject
     ProductGateway productGateway;
 
+    @Inject
+    ProductEnricher productEnricher;
+    @Inject
+    ProductAvailabilityHandler productAvailabilityHandler;
+
     @Override
     public void configure() throws Exception {
         camelContext.setTracing(true);
 
+
+
+        //TO DO : Add exceptions
+
         from("sjms2:" + jmsPrefix + "getProductsFromBoutique?exchangePattern=InOut")
                 .unmarshal().json() // Convertir le message JSON en un objet ProductDTO
                 .choice()
-                // Si l'en-tête "category" est vide ou nul
                 .when(header("category").isNull())
                     .log("Aucune catégorie spécifiée, redirection vers tous les produits.")
                     .bean(productGateway,"getAllProducts")
-
                 .otherwise()
                     .log("Requête reçue avec la catégorie : ${header.category}")
                     .bean(productGateway, "getProductsByCategory(${header.category})") // Appelle la méthode avec la catégorie
@@ -37,14 +46,25 @@ public class CameRoutes extends RouteBuilder {
                 .marshal().json();
 
 
-        from("sjms2:" + jmsPrefix + "purchaseProductRequest")
+        from("sjms2:" + jmsPrefix + "purchaseProductRequest?exchangePattern=InOut")
                 .unmarshal().json(ProductDTO.class)
-                .bean(productGateway, "acheter");
+                .bean(productAvailabilityHandler)
+                .choice()
+                .when(header("available").isEqualTo(false))
+                .marshal().json()
+                .stop()
+                .otherwise()
+                .bean(productEnricher, "findProductPrice")
+                .marshal().json()
+                .end();
 
-//        from("direct:confirmationAchat")
-//                .log("achat effectué avec succès")
-//                .marshal().json()
-//                .to("sjms2:" + jmsPrefix + "purchaseConfirmation") ;// Envoi à Boutique via SJMS2
+
+
+        from("sjms2:" + jmsPrefix + "purchaseProductConfirmation?exchangePattern=InOut")
+                .unmarshal().json(ProductDTO.class)
+                .bean(productGateway, "purchase")
+                .bean(productEnricher, "findProductInfo")
+                .marshal().json();
 
     }
 

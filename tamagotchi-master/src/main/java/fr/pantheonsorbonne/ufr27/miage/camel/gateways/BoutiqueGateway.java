@@ -1,7 +1,6 @@
-package fr.pantheonsorbonne.ufr27.miage.camel;
+package fr.pantheonsorbonne.ufr27.miage.camel.gateways;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.Account;
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 import fr.pantheonsorbonne.ufr27.miage.service.InventoryService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,9 +34,9 @@ public class BoutiqueGateway {
         }
     }
 
-    public void purchaseProduct(ProductDTO achat ) {
+    public String purchaseProduct(ProductDTO achat) {
         try (ProducerTemplate template = camelContext.createProducerTemplate()) {
-            template.sendBody("direct:achat", achat);
+            return template.requestBody("direct:achat", achat, String.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,6 +49,7 @@ public class BoutiqueGateway {
 //    }
 
     public void saveToInventory (ProductDTO product) {
+        System.out.println("Saving product " + product.getName()+" to inventory.");
         this.productService.saveToInventory(product);
     }
 

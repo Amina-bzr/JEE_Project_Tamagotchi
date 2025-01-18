@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
+import com.sun.tools.xjc.model.CDefaultValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,24 +17,35 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable=false)
+    private Boolean limitedEdition; //if limited edition quantity is specified
+
     @Column(nullable = false)
     private Double price;
 
     @Column(nullable = false)
     private String category;
 
-    @Column(nullable = false)
-    private int quantityAvailable;
+    @Column(nullable = true)
+    private Integer quantityAvailable;
 
     public Product() {}
 
-    public Product(String name, Double price, String category, int quantityAvailable) {
+    public Product(String name, Boolean limitedEdition, Double price, String category, Integer quantityAvailable) {
         this.name = name;
+        this.limitedEdition = limitedEdition;
         this.price = price;
         this.category = category;
         this.quantityAvailable = quantityAvailable;
     }
 
+    public Boolean isLimitedEdition() {
+        return limitedEdition;
+    }
+
+    public void setLimitedEdition(Boolean limitedEdition) {
+        this.limitedEdition = limitedEdition;
+    }
 
     public Integer getId() {
         return id;
@@ -68,11 +80,11 @@ public class Product {
         this.category = category;
     }
 
-    public int getQuantityAvailable() {
+    public Integer getQuantityAvailable() {
         return quantityAvailable;
     }
 
-    public void setQuantityAvailable(int quantityAvailable) {
+    public void setQuantityAvailable(Integer quantityAvailable) {
         this.quantityAvailable = quantityAvailable;
     }
 
@@ -81,6 +93,7 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", limitedEdition='" + limitedEdition + '\'' +
                 ", price=" + price +
                 ", category='" + category + '\'' +
                 ", quantityAvailable=" + quantityAvailable +

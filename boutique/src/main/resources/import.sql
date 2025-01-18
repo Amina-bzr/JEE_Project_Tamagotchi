@@ -1,28 +1,18 @@
+--inserting some products to the product table
 
---REPLACE INTO `Tamagotchi` (`idTamagotchi`, `name`, `idOwner`, `hungry`, `happiness`, `energy`, `health`, `state`)
---VALUES
---(1, 'Tama1', 1, 0, 100, 100, 100, 'good'), --fenn
---(2, 'Tama2', 2, 0, 100, 100, 100, 'good'), --odd
---(3, 'Tama3', NULL, 0, 100, 100, 100, 'good'); --no owner
-
-REPLACE INTO `Product` (`name`, `category`, `price`, `quantityAvailable`)
+REPLACE INTO `Product` (`name`, `limitedEdition`, `category`, `price`, `quantityAvailable`)
 VALUES
-    ('Bonnet Rouge', 'Vetements', 3, 50),
-    ('Robe à Volants', 'Vetements', 5, 50),
-    ('T-Shirt Noir', 'Vetements', 4, 50),
-    ('Pantalon Gris', 'Vetements', 4.49, 50),
-    ('Chaussettes', 'Vetements', 2.12, 50),
-    ('Chapeau Grenouille', 'Vetements', 2.99, 50),
-    ('Ballon', 'Jouets', 4.49, 50),
-    ('Corde', 'Jouets', 3.99, 50),
-    ('Frisbee', 'Jouets', 4.99, 50),
-    ('Barette', 'Accessoires', 2, 50),
-    ('Lunettes de soleil', 'Accessoires', 3.11, 50);
+    ('Bonnet Rouge', false, 'Vetements', 3, null),
+    ('Skin Superstar Tamagotchi', true, 'Skins', 45.85, 10),
+    ('Skin Fighter Tamagotchi', true, 'Skins', 75.2, 10),
+    ('Robe à Volants', false, 'Vetements', 5, null),
+    ('T-Shirt Noir', false, 'Vetements', 4, null),
+    ('Pantalon Gris', false, 'Vetements', 4.49, null),
+    ('Chaussettes', false, 'Vetements', 2.12, null),
+    ('Chapeau Grenouille', true, 'Vetements', 2.99, 1), --very rare product
+    ('Ballon', false, 'Jouets', 4.49, null),
+    ('Corde', false, 'Jouets', 3.99, null),
+    ('Frisbee', false, 'Jouets', 4.99, null),
+    ('Barette', false, 'Accessoires', 2, null),
+    ('Lunettes de soleil', false, 'Accessoires', 3.11, null);
 
-
--- Création de la table Product
-
-
--- Insertion de données dans la table Product
-
--- Catégorie : Vêtements

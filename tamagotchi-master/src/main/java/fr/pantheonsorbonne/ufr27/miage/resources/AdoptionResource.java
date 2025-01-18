@@ -1,5 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
-import fr.pantheonsorbonne.ufr27.miage.camel.AdoptionGateway;
+import fr.pantheonsorbonne.ufr27.miage.camel.gateways.AdoptionGateway;
 import fr.pantheonsorbonne.ufr27.miage.dto.AlertDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.AlertTypes;
 import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;

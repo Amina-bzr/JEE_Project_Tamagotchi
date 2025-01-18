@@ -1,7 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.model.Product;
-import fr.pantheonsorbonne.ufr27.miage.model.ProductCategories;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -27,7 +26,7 @@ public class ProductDAO {
                 .setParameter("category", category)
                 .getResultList();
     }
-
+    @Transactional
     public Product findById(Integer id) {
         return em.find(Product.class, id);
     }

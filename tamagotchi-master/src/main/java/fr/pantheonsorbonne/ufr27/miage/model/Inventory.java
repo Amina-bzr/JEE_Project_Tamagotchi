@@ -16,8 +16,11 @@ public class Inventory {
     @Column(name = "productName", nullable = false, length = 45)
     private String productName;
 
-    @Column(name = "productId", nullable = false, length = 45, unique = true)
+    @Column(name = "productId", nullable = false)
     private Integer productId;
+
+    @Column(name = "limitedEdition", nullable = false)
+    private Boolean limitedEdition;
 
     @ManyToOne
     @JoinColumn(name = "tamagotchi", nullable = false)
@@ -27,11 +30,20 @@ public class Inventory {
     public Inventory() {
     }
 
-    public Inventory(String productCategory, String productName, Integer productId, Tamagotchi tamagotchi) {
-        this.productCategory = productCategory;
-        this.productName = productName;
+    public Inventory(Integer productId, Tamagotchi tamagotchi, String productCategory, Boolean limitedEdition, String productName) {
         this.productId = productId;
+        this.productName = productName;
+        this.productCategory = productCategory;
+        this.limitedEdition = limitedEdition;
         this.tamagotchi = tamagotchi;
+    }
+
+    public Boolean getLimitedEdition() {
+        return limitedEdition;
+    }
+
+    public void setLimitedEdition(Boolean limitedEdition) {
+        this.limitedEdition = limitedEdition;
     }
 
     public Integer getIdInventory() {

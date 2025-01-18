@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
-
-
+import fr.pantheonsorbonne.ufr27.miage.camel.gateways.AdoptionGateway;
+import fr.pantheonsorbonne.ufr27.miage.camel.gateways.BankingGateway;
+import fr.pantheonsorbonne.ufr27.miage.camel.gateways.BoutiqueGateway;
 import fr.pantheonsorbonne.ufr27.miage.dto.AlertDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.GiftDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ProductDTO;
@@ -11,9 +12,7 @@ import org.apache.camel.component.jackson.ListJacksonDataFormat;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
-import java.util.List;
-
+import fr.pantheonsorbonne.ufr27.miage.camel.handlers.ResponseMessageHandler;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
@@ -34,23 +33,24 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     BankingGateway bankingGateway;
 
+    @Inject
+    ResponseMessageHandler responseMessageHandler;
+
     @Override
     public void configure() throws Exception {
         camelContext.setTracing(true);
+
 
         //*******************************ADOPTION*******************************
             //Request from magical fairy : remove tamagotchi from owner
         from("sjms2:" + jmsPrefix + "removeTamagotchiFromOwner")
                 .unmarshal().json(TamagotchiDTO.class)
-                .log("ADOPTION SERVICE: Received owner removal request for tamagotchi ${body.idTamagotchi} from MAGICAL FEE ")
-                .bean(adoptionGateway, "removeTamagotchiFromOwner")
-                .log("ADOPTION SERVICE: Tamagotchi removed from owner.");
+                .bean(adoptionGateway, "removeTamagotchiFromOwner");
 
             //SERVICE ADOPT -----> FEE : Tamagotchi got adopted/created!
         from("direct:AdoptionAlert")
                 .marshal().json(AlertDTO.class)
-                .to("sjms2:" + jmsPrefix + "sendAlert")
-                .log("ADOPTION SERVICE: Alert for adopted/created tamagotchi sent to MAGICAL FAIRY.");
+                .to("sjms2:" + jmsPrefix + "sendAlert");
 
         //********************************BANKING********************************
         //SEGGESTION: make different types of gifts! money, item (to inventory) => choice
@@ -62,33 +62,38 @@ public class CamelRoutes extends RouteBuilder {
         //*******************************Boutique*******************************
         from("direct:getProductsFromBoutique")
                 .marshal().json() // Marshal the input to JSON
-                .to("sjms2:" + jmsPrefix + "getProductsFromBoutique?exchangePattern=InOut") // Send to JMS and wait for a response
-                .unmarshal(new ListJacksonDataFormat(ProductDTO.class)); // Unmarshal the response back into an object (e.g., List<ProductDTO>)
+                .to("sjms2:" + jmsPrefix + "getProductsFromBoutique?exchangePattern=InOut")
+                .unmarshal(new ListJacksonDataFormat(ProductDTO.class));
 
 
-
-
-//
-//        from("direct:getProductsByCategoryFromBoutique")
-//                .marshal().json()
-//                .log("MASTER: Sending GET products by category ${header.category} request to BOUTIQUE.")
-//                .to("sjms2:" + jmsPrefix + "getProductsByCategoryRequest");
-
-//
-//        from("direct:achat")
-//                .marshal().json(ProductDTO.class)
-//                .to("sjms2:" + jmsPrefix + "purchaseProductRequest?exchangePattern=InOut")
-//                .unmarshal().json(ProductDTO.class)
-//                .bean(bankingGateway, "purchaseProduct");
-//
-//        //TO DO: add gateway between bank and boutique
-//
-//        from ("sjms2:" + jmsPrefix + "purchaseConfirmation")
-//                .unmarshal().json(ProductDTO.class)
-//                .bean(boutiqueGateway, "saveToInventory");
-//
-
-
+        from("direct:achat")
+                .marshal().json()
+                .to("sjms2:" + jmsPrefix + "purchaseProductRequest?exchangePattern=InOut")
+                .unmarshal().json(ProductDTO.class)
+                .choice()
+                .when(header("available").isEqualTo(true))
+                    .bean(bankingGateway, "purchaseProduct")
+                    .choice()
+                    .when(header("sufficient").isEqualTo(false))
+                        .bean(responseMessageHandler)
+                        .marshal().json()
+                        .log("Available and unsufficient money.")
+                    .stop()
+                    .otherwise()
+                        .marshal().json()
+                        .to("sjms2:" + jmsPrefix + "purchaseProductConfirmation?exchangePattern=InOut")
+                        .unmarshal().json(ProductDTO.class)
+                        .bean(boutiqueGateway, "saveToInventory")
+                        .bean(responseMessageHandler)
+                        .marshal().json()
+                        .log("Available and sufficient money.")
+                    .endChoice()
+                .stop()
+                .otherwise()
+                    .bean(responseMessageHandler)
+                    .marshal().json()
+                .endChoice()
+                .end();
 
     }
 

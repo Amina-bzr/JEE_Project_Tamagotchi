@@ -1,5 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
-import fr.pantheonsorbonne.ufr27.miage.camel.AdoptionGateway;
+import fr.pantheonsorbonne.ufr27.miage.camel.gateways.AdoptionGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.TamagotchiDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OwnerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.AlertDTO;
@@ -9,16 +9,12 @@ import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiHasOwner;
 import fr.pantheonsorbonne.ufr27.miage.exception.TamagotchiNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.Owner;
 import fr.pantheonsorbonne.ufr27.miage.model.Tamagotchi;
-import fr.pantheonsorbonne.ufr27.miage.resources.AdoptionResource;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 
