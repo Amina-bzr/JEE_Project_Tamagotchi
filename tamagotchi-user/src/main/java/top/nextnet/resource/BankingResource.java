@@ -21,10 +21,14 @@ public interface BankingResource {
             @PathParam("tamagotchiIdDest") Integer tamagotchiIdDest,
             @PathParam("amount") double amount);
 
-    //get  amount
+    //get balance
     @Path("/{tamagotchiId}/balance")
     @GET
     public Response getTamagotchiAmount(@PathParam("tamagotchiId") Integer tamagotchiId);
 
+
 }
+
+
+
 

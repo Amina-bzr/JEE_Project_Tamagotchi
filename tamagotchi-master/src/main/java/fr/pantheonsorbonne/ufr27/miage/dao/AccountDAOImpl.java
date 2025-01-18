@@ -17,6 +17,7 @@ public class AccountDAOImpl implements AccountDAO {
     private EntityManager em;
 
     @Override
+    @Transactional
     public Optional<Account> findAccountByNumber(String accountNumber) {
         try {
             Account account = em.createQuery("SELECT a FROM Account a WHERE a.accountNumber = :accountNumber", Account.class)
@@ -29,6 +30,7 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
+    @Transactional
     public Optional<Account> findAccountById(Integer accountId) {
         try {
             Account account = em.createQuery("SELECT a FROM Account a WHERE a.id = :accountId", Account.class)
@@ -41,9 +43,10 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
+    @Transactional
     public Optional<Account> findAccountByTamagotchiId(Integer tamagotchiId) {
         try {
-            Account account = em.createQuery("SELECT a FROM Account a WHERE a.tamagotchi.id = :tamagotchiId", Account.class)
+            Account account = em.createQuery("SELECT a FROM Account a WHERE a.tamagotchiId = :tamagotchiId", Account.class)
                     .setParameter("tamagotchiId", tamagotchiId)
                     .getSingleResult();
             return Optional.of(account);

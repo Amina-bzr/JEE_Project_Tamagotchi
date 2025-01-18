@@ -11,7 +11,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
-
+@Path("/bancaire")
 public class BankingResources {
     @Inject
     BankingService bankingService;
@@ -28,7 +28,6 @@ public class BankingResources {
 
             Account fromAccount = bankingService.getAccountByTamagotchi(tamagotchiId);
             Account toAccount = bankingService.getAccountByTamagotchi(tamagotchiIdDest);
-
 
             bankingService.transfer(fromAccount.getId(), toAccount.getId(), amount);
 
@@ -49,6 +48,7 @@ public class BankingResources {
     @Path("/{tamagotchiId}/balance")
     @GET
     public Response getTamagotchiAmount(@PathParam("tamagotchiId") Integer tamagotchiId) {
+
         try {
             Account account = bankingService.getAccountByTamagotchi(tamagotchiId);
             double balance = account.getBalance();
@@ -64,46 +64,7 @@ public class BankingResources {
         }
     }
 
-}
-
-
-//TEST DES ENDPOINTS
-/*
-POST /banking/{tamagotchiId}/transfer/{tamagotchiIdDest}/{amount}
-GET /banking/{tamagotchiId}/balance
-
- * */
-
-/*
-package top.nextnet.resource;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-
-import java.util.Collection;
-
-
-@Path("/banking")
-@RegisterRestClient(configKey = "user-api")
-public interface BankingResource {
-
-    //transfer money endpoint
-    @POST
-    @Path("/{tamagotchiId}/transfer/{tamagotchiIdDest}/{amount}")
-    public Response transfer(
-            @PathParam("tamagotchiId") Integer tamagotchiId,
-            @PathParam("tamagotchiIdDest") Integer tamagotchiIdDest,
-            @PathParam("amount") double amount);
-
-    //get  amount
-    @Path("/{tamagotchiId}/balance")
-    @GET
-    public Response getTamagotchiAmount(@PathParam("tamagotchiId") Integer tamagotchiId);
 
 }
 
 
-
-* */
