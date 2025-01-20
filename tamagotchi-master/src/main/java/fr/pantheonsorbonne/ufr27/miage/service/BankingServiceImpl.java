@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.AccountDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.TamagotchiDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.TransactionDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.*;
 import fr.pantheonsorbonne.ufr27.miage.model.Account;
@@ -8,8 +9,10 @@ import fr.pantheonsorbonne.ufr27.miage.model.Transaction;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import io.quarkus.scheduler.Scheduled;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ApplicationScoped
 public class BankingServiceImpl implements BankingService {
@@ -118,5 +121,26 @@ public class BankingServiceImpl implements BankingService {
     public Transaction getTransactionDetails(Integer transactionId) {
         return transactionDAO.findTransactionById(transactionId)
                 .orElseThrow(() -> new TransactionNotFoundException(transactionId));
+    }
+
+    @Scheduled(every = "40s")
+    void scheduledDailyMoney() {
+        DailyMoney();
+        System.out.println("Yeahh tu viens de gagner 50 Gotchis d'or !");
+    }
+
+    @Override
+    public void DailyMoney() {
+        List<Account> accounts = accountDAO.getAllAccounts();
+        System.out.println("Exécution de DailyMoney à : " + LocalDateTime.now());
+        if(accounts != null) {
+            for (Account account : accounts) {
+                LocalDateTime now = LocalDateTime.now();
+                account.setBalance(account.getBalance() + 10);
+                accountDAO.updateAccount(account);
+                System.out.println(" -------  AccountID: "+ account.getId()+ "   Balance:"+account.getBalance());
+            }
+        }
+
     }
 }

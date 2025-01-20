@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 import fr.pantheonsorbonne.ufr27.miage.model.Account;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface AccountDAO {
@@ -12,7 +13,7 @@ public interface AccountDAO {
     void updateAccount(Account account);
     void deleteAccount(Account account);
 
-    Collection<Account> getAllAccounts();
+    List<Account> getAllAccounts();
     Account getAccountById(Long accountId);
     Account getAccountByNumber(String accountNumber);
 }

@@ -53,9 +53,7 @@ public class BankingResources {
             Account account = bankingService.getAccountByTamagotchi(tamagotchiId);
             double balance = account.getBalance();
 
-            return Response.status(Response.Status.OK)
-                    .entity("The balance for Tamagotchi " + tamagotchiId + " is " + balance)
-                    .build();
+            return Response.ok("The balance for Tamagotchi " + tamagotchiId + " is " + balance).build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST)

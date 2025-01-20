@@ -18,4 +18,6 @@ public interface BankingService {
     void transfer(Integer fromAccountId, Integer toAccountId, double amount);
 
     Transaction getTransactionDetails(Integer transactionId);
+
+    void DailyMoney();
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -79,7 +80,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     @Transactional
-    public Collection<Account> getAllAccounts() {
+    public List<Account> getAllAccounts() {
         return em.createQuery("SELECT a FROM Account a", Account.class).getResultList();
     }
 

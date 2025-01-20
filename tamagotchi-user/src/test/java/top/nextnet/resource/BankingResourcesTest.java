@@ -12,8 +12,8 @@ public class BankingResourcesTest {
 
     @Test
     public void testTransfer() {
-        Integer tamagotchiId = 10; // Exemple d'ID source
-        Integer tamagotchiIdDest = 11; // Exemple d'ID destination
+        Integer tamagotchiId = 2; // Exemple d'ID source
+        Integer tamagotchiIdDest = 3; // Exemple d'ID destination
         double amount = 50.0;
 
         System.out.println("Testing transfer with URL: /bancaire/" + tamagotchiId + "/transfer/" + tamagotchiIdDest + "/" + amount);
@@ -33,7 +33,7 @@ public class BankingResourcesTest {
 
     @Test
     public void testGetBalance() {
-        Integer tamagotchiId = 12; // Exemple d'ID
+        Integer tamagotchiId = 1; // Exemple d'ID
 
 
         System.out.println("Testing balance with URL: /bancaire/" + tamagotchiId + "/balance");
